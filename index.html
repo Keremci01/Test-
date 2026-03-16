@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+
 <html>
 <head>
 
@@ -8,6 +9,7 @@
 <link rel="stylesheet" href="index.css">
 
 <script src="https://cdn.jsdelivr.net/npm/function-plot/dist/function-plot.js"></script>
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/11.11.0/math.min.js"></script>
 
 <style>
@@ -49,9 +51,7 @@ border:1px solid #444;
 
 <div id="funcGroup" style="display:none">
 
-<button onclick="setMode('function')">Fonksiyon Grafiği</button>
-<button onclick="setMode('multi')">Çoklu Fonksiyon Çiz</button>
-<button onclick="setMode('distance')">İki Nokta Mesafe</button>
+<button onclick="setMode('function')">Fonksiyon Grafiği</button> <button onclick="setMode('multi')">Çoklu Fonksiyon Çiz</button> <button onclick="setMode('distance')">İki Nokta Mesafe</button>
 
 </div>
 
@@ -59,10 +59,7 @@ border:1px solid #444;
 
 <div id="analysisGroup" style="display:none">
 
-<button onclick="setMode('derivative')">Türev</button>
-<button onclick="setMode('integral')">İntegral</button>
-<button onclick="setMode('tangent')">Teğet</button>
-<button onclick="setMode('limit')">Limit</button>
+<button onclick="setMode('derivative')">Türev</button> <button onclick="setMode('integral')">İntegral</button> <button onclick="setMode('tangent')">Teğet</button> <button onclick="setMode('limit')">Limit</button>
 
 </div>
 
@@ -91,8 +88,7 @@ border:1px solid #444;
 
 <br><br>
 
-<button onclick="draw()">Grafiği Çiz</button>
-<button onclick="downloadPNG()">PNG indir</button>
+<button onclick="draw()">Grafiği Çiz</button> <button onclick="downloadPNG()">PNG indir</button>
 
 <div id="plot"></div>
 <div id="result"></div>
@@ -119,35 +115,35 @@ document.body.classList.toggle("dark")
 
 function hideInputs(){
 
-document.getElementById("func2").style.display="none"
-document.getElementById("func3").style.display="none"
+func2.style.display="none"
+func3.style.display="none"
 
-document.getElementById("a").style.display="none"
-document.getElementById("b").style.display="none"
+a.style.display="none"
+b.style.display="none"
 
-document.getElementById("x0").style.display="none"
+x0.style.display="none"
 
-document.getElementById("x1").style.display="none"
-document.getElementById("y1").style.display="none"
-document.getElementById("x2").style.display="none"
-document.getElementById("y2").style.display="none"
+x1.style.display="none"
+y1.style.display="none"
+x2.style.display="none"
+y2.style.display="none"
 
 }
 
 function clearInputs(){
 
-document.getElementById("func2").value=""
-document.getElementById("func3").value=""
+func2.value=""
+func3.value=""
 
-document.getElementById("a").value=""
-document.getElementById("b").value=""
+a.value=""
+b.value=""
 
-document.getElementById("x0").value=""
+x0.value=""
 
-document.getElementById("x1").value=""
-document.getElementById("y1").value=""
-document.getElementById("x2").value=""
-document.getElementById("y2").value=""
+x1.value=""
+y1.value=""
+x2.value=""
+y2.value=""
 
 }
 
@@ -180,6 +176,7 @@ title.innerText="İki Nokta Mesafe"
 
 x1.style.display="inline"
 y1.style.display="inline"
+
 x2.style.display="inline"
 y2.style.display="inline"
 
@@ -218,15 +215,11 @@ x0.style.display="inline"
 
 function draw(){
 
-let plot=document.getElementById("plot")
-let result=document.getElementById("result")
-
 plot.innerHTML=""
 result.innerHTML=""
 
-let width=plot.offsetWidth
-
-let f=document.getElementById("func").value
+let width=document.getElementById("plot").offsetWidth
+let f=func.value
 
 try{
 
@@ -244,9 +237,8 @@ data:[{fn:f}]
 
 if(mode==="multi"){
 
-let data=[]
+let data=[{fn:f}]
 
-if(func.value!="") data.push({fn:func.value})
 if(func2.value!="") data.push({fn:func2.value})
 if(func3.value!="") data.push({fn:func3.value})
 
@@ -285,18 +277,44 @@ let aVal=Number(a.value)
 let bVal=Number(b.value)
 
 functionPlot({
+
 target:"#plot",
 width:width,
 height:400,
 grid:true,
+
 data:[
+
 {fn:f},
+
 {
 fn:f,
 range:[aVal,bVal],
-closed:true
+closed:true,
+color:"rgba(0,120,255,0.3)"
+},
+
+{
+fn:"x="+aVal,
+color:"red"
+},
+
+{
+fn:"x="+bVal,
+color:"red"
+},
+
+{
+points:[
+[aVal,math.evaluate(f,{x:aVal})],
+[bVal,math.evaluate(f,{x:bVal})]
+],
+fnType:"points",
+graphType:"scatter"
 }
+
 ]
+
 })
 
 }
@@ -414,9 +432,7 @@ ctx.drawImage(img,0,0,width,height)
 let link=document.createElement("a")
 
 link.download="grafik.png"
-
 link.href=canvas.toDataURL("image/png")
-
 link.click()
 
 }
