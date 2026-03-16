@@ -16,11 +16,20 @@ font-family:Arial;
 margin:0;
 }
 
+/* hamburger */
+
 #hamburger{
 font-size:30px;
-padding:10px;
+position:fixed;
+top:10px;
+left:10px;
 cursor:pointer;
+background:white;
+padding:5px 10px;
+z-index:1000;
 }
+
+/* menu */
 
 #menu{
 position:fixed;
@@ -32,6 +41,7 @@ background:#222;
 color:white;
 padding:20px;
 display:none;
+z-index:999;
 }
 
 #menu button{
@@ -42,8 +52,10 @@ font-size:16px;
 cursor:pointer;
 }
 
+/* content */
+
 #content{
-margin-left:20px;
+margin-left:40px;
 padding:20px;
 }
 
@@ -74,7 +86,7 @@ height:500px;
 
 <input id="func" value="x^2">
 
-<button onclick="draw()">Çiz</button>
+<button onclick="draw()">Grafiği Çiz</button>
 
 <div id="plot"></div>
 
