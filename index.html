@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-
 <html>
 <head>
 
@@ -9,12 +8,9 @@
 <link rel="stylesheet" href="index.css">
 
 <script src="https://cdn.jsdelivr.net/npm/function-plot/dist/function-plot.js"></script>
-
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/11.11.0/math.min.js"></script>
 
 <style>
-
-/* DARK MODE */
 
 .dark{
 background:#121212;
@@ -53,7 +49,21 @@ border:1px solid #444;
 
 <h3>Menü</h3>
 
-<button onclick="setMode('function')">Fonksiyon Grafiği</button> <button onclick="setMode('derivative')">Türev Grafiği</button> <button onclick="setMode('integral')">İntegral Alanı</button> <button onclick="setMode('tangent')">Teğet Doğrusu</button> <button onclick="setMode('limit')">Limit Grafiği</button>
+<button onclick="toggleFunctions()">Fonksiyonlar ▼</button>
+
+<div id="functionsMenu" class="submenu">
+
+<button onclick="setMode('function')">Fonksiyon Grafiği</button>
+
+<button onclick="setMode('derivative')">Türev Grafiği</button>
+
+<button onclick="setMode('integral')">İntegral Alanı</button>
+
+<button onclick="setMode('tangent')">Teğet Doğrusu</button>
+
+<button onclick="setMode('limit')">Limit Grafiği</button>
+
+</div>
 
 <button onclick="toggleDark()">🌙 Dark Mode</button>
 
@@ -73,26 +83,22 @@ border:1px solid #444;
 
 <div id="plot"></div>
 
-<hr style="margin:40px 0">
-
-<h2>AI Matematik Asistanı</h2>
-
-<input id="aiInput" placeholder="Matematik sorusu yaz">
-<button onclick="askAI()">Sor</button>
-
-<div id="aiAnswer" style="margin-top:20px"></div>
-
 </div>
 
 <script>
-
-const API_KEY="AIzaSyAZocNHOfHLnIctWWsDmehkTgIlzxXipkY";
 
 let mode="function";
 
 function toggleMenu(){
 let m=document.getElementById("menu");
 m.style.display = m.style.display==="block" ? "none" : "block";
+}
+
+function toggleFunctions(){
+
+let m=document.getElementById("functionsMenu");
+m.style.display = m.style.display==="block" ? "none" : "block";
+
 }
 
 function toggleDark(){
@@ -247,60 +253,6 @@ data:[
 
 }catch(e){
 console.log(e);
-}
-
-}
-
-async function askAI(){
-
-let q=document.getElementById("aiInput").value;
-
-document.getElementById("aiAnswer").innerText="AI düşünüyor...";
-
-try{
-
-let response = await fetch(
-"https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key="+API_KEY,
-{
-method:"POST",
-headers:{
-"Content-Type":"application/json"
-},
-body:JSON.stringify({
-contents:[
-{
-parts:[
-{
-text:"Bir matematik öğretmeni gibi adım adım çöz ve neden yaptığını açıkla: "+q
-}
-]
-}
-]
-})
-});
-
-let data=await response.json();
-
-console.log(data);
-
-if(data.candidates){
-
-let ans=data.candidates[0].content.parts[0].text;
-
-document.getElementById("aiAnswer").innerText=ans;
-
-}else{
-
-document.getElementById("aiAnswer").innerText="AI cevap veremedi.";
-
-}
-
-}catch(e){
-
-document.getElementById("aiAnswer").innerText="Bağlantı hatası.";
-
-console.log(e);
-
 }
 
 }
