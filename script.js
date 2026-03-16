@@ -168,7 +168,7 @@ document.getElementById("aiAnswer").innerText="AI düşünüyor...";
 try{
 
 let response = await fetch(
-"https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=AIzaSyDEUurJTYceMm4vfQU1Ifk9-1frD4Vtg9E",
+"https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=AIzaSyDEUurJTYceMm4vfQU1Ifk9-1frD4Vtg9E"
 {
 method:"POST",
 headers:{
