@@ -1,4 +1,4 @@
-```html
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -48,9 +48,10 @@
 <h2>AI Matematik Asistanı</h2>
 
 <input id="aiInput" placeholder="Matematik sorusu yaz">
+
 <button onclick="askAI()">Sor</button>
 
-<div id="aiAnswer" style="margin-top:20px"></div>
+<div id="aiAnswer" style="margin-top:20px;font-size:16px;"></div>
 
 </div>
 
@@ -59,8 +60,11 @@
 let mode="function";
 
 function toggleMenu(){
+
 let m=document.getElementById("menu");
+
 m.style.display = m.style.display==="block" ? "none" : "block";
+
 }
 
 function setMode(m){
@@ -210,7 +214,9 @@ data:[
 }
 
 }catch(e){
+
 console.log(e);
+
 }
 
 }
@@ -218,6 +224,10 @@ console.log(e);
 async function askAI(){
 
 let q=document.getElementById("aiInput").value;
+
+document.getElementById("aiAnswer").innerText="AI düşünüyor...";
+
+try{
 
 let response = await fetch(
 "https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=AIzaSyDEUurJTYceMm4vfQU1Ifk9-1frD4Vtg9E",
@@ -227,22 +237,28 @@ headers:{
 "Content-Type":"application/json"
 },
 body:JSON.stringify({
-
 contents:[{
 parts:[{
 text:"Bir matematik öğretmeni gibi adım adım çöz ve neden yaptığını açıkla: "+q
 }]
 }]
-
 })
-
 });
 
-let data=await response.json();
+let data = await response.json();
 
-let ans=data.candidates[0].content.parts[0].text;
+let ans = data.candidates[0].content.parts[0].text;
 
-document.getElementById("aiAnswer").innerText=ans;
+document.getElementById("aiAnswer").innerText = ans;
+
+}
+catch(e){
+
+document.getElementById("aiAnswer").innerText="AI cevap veremedi.";
+
+console.log(e);
+
+}
 
 }
 
