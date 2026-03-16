@@ -1,41 +1,17 @@
 <!DOCTYPE html>
 
 <html>
+
 <head>
 
 <meta charset="utf-8">
-<title>Math Calculator</title>
+<title>Math Graph</title>
 
-<link rel="stylesheet" href="index.css">
+<link rel="stylesheet" href="style.css">
 
 <script src="https://cdn.jsdelivr.net/npm/function-plot/dist/function-plot.js"></script>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/11.11.0/math.min.js"></script>
-
-<style>
-
-.dark{
-background:#121212;
-color:white;
-}
-
-.dark #menu{
-background:#0d1b2a;
-}
-
-.dark button{
-background:#1e1e1e;
-color:white;
-border:1px solid #444;
-}
-
-.dark input{
-background:#1e1e1e;
-color:white;
-border:1px solid #444;
-}
-
-</style>
 
 </head>
 
@@ -47,15 +23,15 @@ border:1px solid #444;
 
 <h3>Menü</h3>
 
-<button onclick="toggleGroup('funcGroup')">Fonksiyonlar ▼</button>
+<button onclick="toggleGroup('funcGroup')">Fonksiyonlar</button>
 
 <div id="funcGroup" style="display:none">
 
-<button onclick="setMode('function')">Fonksiyon Grafiği</button> <button onclick="setMode('multi')">Çoklu Fonksiyon Çiz</button> <button onclick="setMode('distance')">İki Nokta Mesafe</button>
+<button onclick="setMode('function')">Fonksiyon Grafiği</button> <button onclick="setMode('multi')">Çoklu Fonksiyon</button> <button onclick="setMode('distance')">İki Nokta Mesafe</button>
 
 </div>
 
-<button onclick="toggleGroup('analysisGroup')">Analiz ▼</button>
+<button onclick="toggleGroup('analysisGroup')">Analiz</button>
 
 <div id="analysisGroup" style="display:none">
 
@@ -63,34 +39,46 @@ border:1px solid #444;
 
 </div>
 
-<button onclick="toggleDark()">🌙 Dark Mode</button>
-
 </div>
 
 <div id="content">
 
 <h2 id="title">Fonksiyon Grafiği</h2>
 
+<div style="display:flex;align-items:center;gap:8px">
 <input id="func" placeholder="x^2">
+<input type="color" id="color1" class="colorPicker" value="#2563eb">
+</div>
 
-<input id="func2" placeholder="ikinci fonksiyon" style="display:none">
-<input id="func3" placeholder="üçüncü fonksiyon" style="display:none">
+<div id="multi2" style="display:none;align-items:center;gap:8px;margin-top:8px">
+<input id="func2" placeholder="x^3">
+<input type="color" id="color2" class="colorPicker" value="#e11d48">
+</div>
 
-<input id="a" type="number" placeholder="a" style="display:none">
-<input id="b" type="number" placeholder="b" style="display:none">
+<div id="multi3" style="display:none;align-items:center;gap:8px;margin-top:8px">
+<input id="func3" placeholder="sin(x)">
+<input type="color" id="color3" class="colorPicker" value="#16a34a">
+</div>
 
-<input id="x0" type="number" placeholder="x noktası" style="display:none">
+<br>
 
-<input id="x1" type="number" placeholder="x1" style="display:none">
-<input id="y1" type="number" placeholder="y1" style="display:none">
-<input id="x2" type="number" placeholder="x2" style="display:none">
-<input id="y2" type="number" placeholder="y2" style="display:none">
+<input id="a" placeholder="a" style="display:none">
+<input id="b" placeholder="b" style="display:none">
+
+<input id="x0" placeholder="x noktası" style="display:none">
+
+<input id="x1" placeholder="x1" style="display:none">
+<input id="y1" placeholder="y1" style="display:none">
+
+<input id="x2" placeholder="x2" style="display:none">
+<input id="y2" placeholder="y2" style="display:none">
 
 <br><br>
 
 <button onclick="draw()">Grafiği Çiz</button> <button onclick="downloadPNG()">PNG indir</button>
 
 <div id="plot"></div>
+
 <div id="result"></div>
 
 </div>
@@ -101,22 +89,20 @@ let mode="function"
 
 function toggleMenu(){
 let m=document.getElementById("menu")
-m.style.display = m.style.display==="block" ? "none":"block"
+m.style.display=m.style.display==="block"?"none":"block"
 }
 
 function toggleGroup(id){
 let g=document.getElementById(id)
-g.style.display = g.style.display==="block" ? "none":"block"
+g.style.display=g.style.display==="block"?"none":"block"
 }
 
-function toggleDark(){
-document.body.classList.toggle("dark")
-}
+function setMode(m){
 
-function hideInputs(){
+mode=m
 
-func2.style.display="none"
-func3.style.display="none"
+multi2.style.display="none"
+multi3.style.display="none"
 
 a.style.display="none"
 b.style.display="none"
@@ -128,35 +114,6 @@ y1.style.display="none"
 x2.style.display="none"
 y2.style.display="none"
 
-}
-
-function clearInputs(){
-
-func2.value=""
-func3.value=""
-
-a.value=""
-b.value=""
-
-x0.value=""
-
-x1.value=""
-y1.value=""
-x2.value=""
-y2.value=""
-
-}
-
-function setMode(m){
-
-mode=m
-
-hideInputs()
-clearInputs()
-
-plot.innerHTML=""
-result.innerHTML=""
-
 if(m==="function"){
 title.innerText="Fonksiyon Grafiği"
 }
@@ -165,25 +122,13 @@ if(m==="multi"){
 
 title.innerText="Çoklu Fonksiyon"
 
-func2.style.display="inline"
-func3.style.display="inline"
-
-}
-
-if(m==="distance"){
-
-title.innerText="İki Nokta Mesafe"
-
-x1.style.display="inline"
-y1.style.display="inline"
-
-x2.style.display="inline"
-y2.style.display="inline"
+multi2.style.display="flex"
+multi3.style.display="flex"
 
 }
 
 if(m==="derivative"){
-title.innerText="Türev Grafiği"
+title.innerText="Türev"
 }
 
 if(m==="integral"){
@@ -211,6 +156,18 @@ x0.style.display="inline"
 
 }
 
+if(m==="distance"){
+
+title.innerText="İki Nokta Mesafe"
+
+x1.style.display="inline"
+y1.style.display="inline"
+
+x2.style.display="inline"
+y2.style.display="inline"
+
+}
+
 }
 
 function draw(){
@@ -218,7 +175,8 @@ function draw(){
 plot.innerHTML=""
 result.innerHTML=""
 
-let width=document.getElementById("plot").offsetWidth
+let width=plot.offsetWidth
+
 let f=func.value
 
 try{
@@ -226,28 +184,41 @@ try{
 if(mode==="function"){
 
 functionPlot({
+
 target:"#plot",
 width:width,
 height:400,
 grid:true,
-data:[{fn:f}]
+
+data:[
+{fn:f,color:color1.value}
+]
+
 })
 
 }
 
 if(mode==="multi"){
 
-let data=[{fn:f}]
+let data=[]
 
-if(func2.value!="") data.push({fn:func2.value})
-if(func3.value!="") data.push({fn:func3.value})
+if(func.value!="")
+data.push({fn:func.value,color:color1.value})
+
+if(func2.value!="")
+data.push({fn:func2.value,color:color2.value})
+
+if(func3.value!="")
+data.push({fn:func3.value,color:color3.value})
 
 functionPlot({
+
 target:"#plot",
 width:width,
 height:400,
 grid:true,
 data:data
+
 })
 
 }
@@ -259,14 +230,17 @@ let d=math.derivative(f,"x").toString()
 result.innerHTML="f'(x) = "+d
 
 functionPlot({
+
 target:"#plot",
 width:width,
 height:400,
 grid:true,
+
 data:[
-{fn:f},
-{fn:d}
+{fn:f,color:color1.value},
+{fn:d,color:"red"}
 ]
+
 })
 
 }
@@ -285,7 +259,7 @@ grid:true,
 
 data:[
 
-{fn:f},
+{fn:f,color:color1.value},
 
 {
 fn:f,
@@ -294,24 +268,8 @@ closed:true,
 color:"rgba(0,120,255,0.3)"
 },
 
-{
-fn:"x="+aVal,
-color:"red"
-},
-
-{
-fn:"x="+bVal,
-color:"red"
-},
-
-{
-points:[
-[aVal,math.evaluate(f,{x:aVal})],
-[bVal,math.evaluate(f,{x:bVal})]
-],
-fnType:"points",
-graphType:"scatter"
-}
+{fn:"x="+aVal,color:"red"},
+{fn:"x="+bVal,color:"red"}
 
 ]
 
@@ -329,19 +287,22 @@ let slope=d.evaluate({x:x})
 
 let y=math.evaluate(f,{x:x})
 
-let tangent=slope+"*(x-"+x+")+"+y
+let t=slope+"*(x-"+x+")+"+y
 
-result.innerHTML="Teğet: "+tangent
+result.innerHTML="Teğet: "+t
 
 functionPlot({
+
 target:"#plot",
 width:width,
 height:400,
 grid:true,
+
 data:[
-{fn:f},
-{fn:tangent}
+{fn:f,color:color1.value},
+{fn:t,color:"red"}
 ]
+
 })
 
 }
@@ -363,6 +324,7 @@ if(mode==="distance"){
 
 let x1v=Number(x1.value)
 let y1v=Number(y1.value)
+
 let x2v=Number(x2.value)
 let y2v=Number(y2.value)
 
@@ -371,10 +333,12 @@ let d=Math.sqrt((x2v-x1v)**2+(y2v-y1v)**2)
 result.innerHTML="Mesafe = "+d
 
 functionPlot({
+
 target:"#plot",
 width:width,
 height:400,
 grid:true,
+
 data:[
 {
 points:[[x1v,y1v],[x2v,y2v]],
@@ -382,6 +346,7 @@ fnType:"points",
 graphType:"scatter"
 }
 ]
+
 })
 
 }
@@ -399,7 +364,7 @@ function downloadPNG(){
 let svg=document.querySelector("#plot svg")
 
 if(!svg){
-alert("Önce grafiği çiz")
+alert("Önce grafik çiz")
 return
 }
 
@@ -432,17 +397,14 @@ ctx.drawImage(img,0,0,width,height)
 let link=document.createElement("a")
 
 link.download="grafik.png"
-link.href=canvas.toDataURL("image/png")
+link.href=canvas.toDataURL()
 link.click()
 
 }
 
-img.src="data:image/svg+xml;base64," + btoa(unescape(encodeURIComponent(source)))
+img.src="data:image/svg+xml;base64,"+btoa(unescape(encodeURIComponent(source)))
 
 }
-
-window.addEventListener("resize",draw)
-window.onload=draw
 
 </script>
 
