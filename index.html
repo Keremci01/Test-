@@ -55,8 +55,6 @@
 
 <script>
 
-const API_KEY="AIzaSyAZocNHOfHLnIctWWsDmehkTgIlzxXipkY";
-
 let mode="function";
 
 function toggleMenu(){
@@ -225,7 +223,7 @@ document.getElementById("aiAnswer").innerText="AI düşünüyor...";
 try{
 
 let response = await fetch(
-"https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key="+API_KEY,
+"https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=AIzaSyAZocNHOfHLnIctWWsDmehkTgIlzxXipkY",
 {
 method:"POST",
 headers:{
@@ -244,11 +242,11 @@ text:"Bir matematik öğretmeni gibi adım adım çöz ve neden yaptığını a�
 })
 });
 
-let data=await response.json();
+let data = await response.json();
 
 console.log(data);
 
-if(data.candidates){
+if(data.candidates && data.candidates.length > 0){
 
 let ans=data.candidates[0].content.parts[0].text;
 
