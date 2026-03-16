@@ -2,8 +2,9 @@
 
 <html>
 <head>
+
 <meta charset="utf-8">
-<title>Math Graph Tool</title>
+<title>Math Graph</title>
 
 <script src="https://cdn.jsdelivr.net/npm/function-plot/dist/function-plot.js"></script>
 
@@ -56,10 +57,6 @@ cursor:pointer;
 #content{
 margin-left:60px;
 padding:20px;
-}
-
-#plot{
-margin-top:20px;
 }
 
 </style>
@@ -180,11 +177,6 @@ width:800,
 height:500,
 grid:true,
 
-annotations:[
-{x:a,text:"a"},
-{x:b,text:"b"}
-],
-
 data:[
 
 {
@@ -199,18 +191,26 @@ color:"red"
 },
 
 {
+points:[[a,0]],
+fnType:"points",
+graphType:"scatter",
+color:"black"
+},
+
+{
+points:[[b,0]],
+fnType:"points",
+graphType:"scatter",
+color:"black"
+},
+
+{
 fn:`${a}`,
 color:"black"
 },
 
 {
 fn:`${b}`,
-color:"black"
-},
-
-{
-fn:"0",
-range:[a,b],
 color:"black"
 }
 
