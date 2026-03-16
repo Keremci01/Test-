@@ -1,17 +1,65 @@
 <!DOCTYPE html>
 
 <html>
-
 <head>
 
 <meta charset="utf-8">
 <title>Math Graph</title>
 
-<link rel="stylesheet" href="index.css">
-
 <script src="https://cdn.jsdelivr.net/npm/function-plot/dist/function-plot.js"></script>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/11.11.0/math.min.js"></script>
+
+<style>
+
+body{
+font-family:Arial;
+margin:0;
+background:#f4f6f9;
+}
+
+#hamburger{
+font-size:28px;
+position:fixed;
+top:10px;
+left:10px;
+cursor:pointer;
+background:white;
+padding:8px 12px;
+border-radius:6px;
+z-index:1001;
+}
+
+#menu{
+position:fixed;
+left:0;
+top:0;
+width:230px;
+height:100%;
+background:#1f1f1f;
+color:white;
+padding:25px;
+padding-top:70px;
+display:none;
+}
+
+#menu button{
+width:100%;
+padding:12px;
+margin:10px 0;
+border:none;
+background:#333;
+color:white;
+border-radius:6px;
+cursor:pointer;
+}
+
+#content{
+margin-left:60px;
+padding:20px;
+}
+
+</style>
 
 </head>
 
@@ -156,6 +204,18 @@ color:"black"
 {
 fn:`${b}`,
 range:[0,10],
+color:"black"
+},
+
+{
+points:[[a,0]],
+fnType:"points",
+color:"black"
+},
+
+{
+points:[[b,0]],
+fnType:"points",
 color:"black"
 }
 
