@@ -1,13 +1,16 @@
 <!DOCTYPE html>
 <html>
 <head>
+
 <meta charset="utf-8">
-<title>Math Graph</title>
+<title>Math Calculator</title>
 
 <script src="https://cdn.jsdelivr.net/npm/function-plot/dist/function-plot.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/11.11.0/math.min.js"></script>
 
 <style>
+
+/* SAYFA */
 
 body{
 font-family:Arial;
@@ -15,16 +18,33 @@ margin:0;
 background:#f4f6f9;
 }
 
+/* DARK MODE */
+
+.dark{
+background:#121212;
+color:white;
+}
+
+.dark #plot{
+background:#1e1e1e;
+}
+
+/* HAMBURGER */
+
 #hamburger{
 font-size:26px;
 position:fixed;
 top:10px;
 left:10px;
 background:white;
-padding:8px 12px;
+padding:10px 14px;
 cursor:pointer;
-border-radius:8px;
+border-radius:10px;
+z-index:2000;
+box-shadow:0 4px 10px rgba(0,0,0,0.3);
 }
+
+/* MENU */
 
 #menu{
 position:fixed;
@@ -37,50 +57,53 @@ color:white;
 padding:20px;
 padding-top:60px;
 display:none;
+z-index:1000;
 }
+
+/* MENU BUTTON */
 
 #menu button{
 width:100%;
-margin:6px 0;
 padding:10px;
+margin:8px 0;
 background:#1f2937;
 color:white;
 border:none;
-border-radius:8px;
 cursor:pointer;
+border-radius:6px;
 }
 
-#menu button:hover{
-background:#2563eb;
-}
+/* CONTENT */
 
 #content{
 margin-left:60px;
 padding:40px;
 }
 
+/* INPUT */
+
 input{
 padding:8px;
-margin:4px;
+margin-right:8px;
 }
+
+/* BUTTON */
+
+#content button{
+padding:8px 16px;
+}
+
+/* GRAPH */
 
 #plot{
 margin-top:20px;
 background:white;
-padding:20px;
+padding:10px;
 border-radius:10px;
 }
 
-.dark{
-background:#121212;
-color:white;
-}
-
-.dark #plot{
-background:#1e1e1e;
-}
-
 </style>
+
 </head>
 
 <body>
@@ -91,20 +114,7 @@ background:#1e1e1e;
 
 <h3>Menü</h3>
 
-<button onclick="toggleFunctions()">Fonksiyonlar ▼</button>
-
-<div id="functionsMenu" style="display:none">
-
 <button onclick="setMode('function')">Fonksiyon Grafiği</button>
-
-<button onclick="setMode('table')">Fonksiyon Tablosu</button>
-
-<button onclick="setMode('point')">Nokta Ekle</button>
-
-<button onclick="setMode('distance')">İki Nokta Mesafe</button>
-
-</div>
-
 <button onclick="setMode('derivative')">Türev</button>
 <button onclick="setMode('integral')">İntegral</button>
 <button onclick="setMode('tangent')">Teğet</button>
@@ -120,34 +130,30 @@ background:#1e1e1e;
 
 <input id="func" value="x^2">
 
-<input id="a" placeholder="a" style="display:none">
-<input id="b" placeholder="b" style="display:none">
-
-<input id="x0" placeholder="x noktası" style="display:none">
+<input id="a" type="number" placeholder="a" style="display:none">
+<input id="b" type="number" placeholder="b" style="display:none">
+<input id="x0" type="number" placeholder="x noktası" style="display:none">
 
 <button onclick="draw()">Grafiği Çiz</button>
 
-<button onclick="downloadPNG()">PNG indir</button>
-
 <div id="plot"></div>
-
-<div id="table"></div>
 
 </div>
 
 <script>
 
 let mode="function";
-let points=[];
 
 function toggleMenu(){
+
 let m=document.getElementById("menu");
-m.style.display = m.style.display==="block" ? "none":"block";
+
+if(m.style.display==="block"){
+m.style.display="none";
+}else{
+m.style.display="block";
 }
 
-function toggleFunctions(){
-let m=document.getElementById("functionsMenu");
-m.style.display = m.style.display==="block" ? "none":"block";
 }
 
 function toggleDark(){
@@ -158,17 +164,34 @@ function setMode(m){
 
 mode=m;
 
+document.getElementById("menu").style.display="none";
+
 document.getElementById("a").style.display="none";
 document.getElementById("b").style.display="none";
 document.getElementById("x0").style.display="none";
 
-if(mode==="integral"){
-a.style.display="inline";
-b.style.display="inline";
+if(mode==="function"){
+document.getElementById("title").innerText="Fonksiyon Grafiği";
 }
 
-if(mode==="tangent" || mode==="limit"){
-x0.style.display="inline";
+if(mode==="derivative"){
+document.getElementById("title").innerText="Türev Grafiği";
+}
+
+if(mode==="integral"){
+document.getElementById("title").innerText="İntegral Alanı";
+document.getElementById("a").style.display="inline";
+document.getElementById("b").style.display="inline";
+}
+
+if(mode==="tangent"){
+document.getElementById("title").innerText="Teğet Doğrusu";
+document.getElementById("x0").style.display="inline";
+}
+
+if(mode==="limit"){
+document.getElementById("title").innerText="Limit Grafiği";
+document.getElementById("x0").style.display="inline";
 }
 
 draw();
@@ -178,131 +201,113 @@ draw();
 function draw(){
 
 document.getElementById("plot").innerHTML="";
-document.getElementById("table").innerHTML="";
 
 let f=document.getElementById("func").value;
 
-let width=700;
-
-let data=[];
+let width=document.getElementById("content").offsetWidth-120;
 
 try{
 
 if(mode==="function"){
-data=[{fn:f}];
-}
-
-if(mode==="derivative"){
-let d=math.derivative(f,"x").toString();
-data=[{fn:d,color:"red"}];
-}
-
-if(mode==="integral"){
-
-let A=parseFloat(a.value);
-let B=parseFloat(b.value);
-
-data=[
-{fn:f},
-{fn:f,range:[A,B],closed:true,color:"skyblue"}
-];
-
-}
-
-if(mode==="tangent"){
-
-let X=parseFloat(x0.value);
-
-let y=math.evaluate(f,{x:X});
-
-let d=math.derivative(f,"x").toString();
-
-let slope=math.evaluate(d,{x:X});
-
-let t=`${slope}*(x-${X})+${y}`;
-
-data=[
-{fn:f},
-{fn:t,color:"red"},
-{points:[[X,y]],fnType:"points"}
-];
-
-}
-
-if(mode==="limit"){
-
-let X=parseFloat(x0.value);
-
-data=[
-{fn:f},
-{fn:`${X}`,range:[-10,10],color:"red"}
-];
-
-}
 
 functionPlot({
 target:"#plot",
 width:width,
 height:400,
 grid:true,
-data:data
+data:[
+{fn:f}
+]
 });
-
-if(mode==="table"){
-
-let html="<table border='1'><tr><th>x</th><th>f(x)</th></tr>";
-
-for(let i=-5;i<=5;i++){
-
-let y=math.evaluate(f,{x:i});
-
-html+=`<tr><td>${i}</td><td>${y}</td></tr>`;
 
 }
 
-html+="</table>";
+if(mode==="derivative"){
 
-document.getElementById("table").innerHTML=html;
+let d=math.derivative(f,"x").toString();
+
+functionPlot({
+target:"#plot",
+width:width,
+height:400,
+grid:true,
+data:[
+{fn:d}
+]
+});
+
+}
+
+if(mode==="integral"){
+
+let a=parseFloat(document.getElementById("a").value);
+let b=parseFloat(document.getElementById("b").value);
+
+functionPlot({
+
+target:"#plot",
+width:width,
+height:400,
+grid:true,
+
+data:[
+{fn:f,color:"black"},
+{fn:f,range:[a,b],closed:true,color:"skyblue"}
+]
+
+});
+
+}
+
+if(mode==="tangent"){
+
+let x0=parseFloat(document.getElementById("x0").value);
+
+let f0=math.evaluate(f,{x:x0});
+let d=math.derivative(f,"x").toString();
+let slope=math.evaluate(d,{x:x0});
+
+let tangent=`${slope}*(x-${x0})+${f0}`;
+
+functionPlot({
+
+target:"#plot",
+width:width,
+height:400,
+grid:true,
+
+data:[
+{fn:f,color:"black"},
+{fn:tangent,color:"red"},
+{points:[[x0,f0]],fnType:"points",color:"red"}
+]
+
+});
+
+}
+
+if(mode==="limit"){
+
+let x0=parseFloat(document.getElementById("x0").value);
+
+functionPlot({
+
+target:"#plot",
+width:width,
+height:400,
+grid:true,
+
+data:[
+{fn:f,color:"black"},
+{fn:`${x0}`,range:[-10,10],color:"red"}
+]
+
+});
 
 }
 
 }catch(e){
 console.log(e);
-}
-
-}
-
-function downloadPNG(){
-
-let svg=document.querySelector("#plot svg");
-
-let serializer=new XMLSerializer();
-
-let source=serializer.serializeToString(svg);
-
-let img=new Image();
-
-img.src="data:image/svg+xml;base64,"+btoa(source);
-
-let canvas=document.createElement("canvas");
-
-canvas.width=800;
-canvas.height=500;
-
-let ctx=canvas.getContext("2d");
-
-img.onload=function(){
-
-ctx.drawImage(img,0,0);
-
-let a=document.createElement("a");
-
-a.download="graph.png";
-
-a.href=canvas.toDataURL("image/png");
-
-a.click();
-
 }
 
 }
