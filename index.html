@@ -6,69 +6,10 @@
 <meta charset="utf-8">
 <title>Math Graph</title>
 
+<link rel="stylesheet" href="index.css">
+
 <script src="https://cdn.jsdelivr.net/npm/function-plot/dist/function-plot.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/11.11.0/math.min.js"></script>
-
-<style>
-
-body{
-font-family:Arial;
-margin:0;
-background:#f4f6f9;
-}
-
-#hamburger{
-font-size:28px;
-position:fixed;
-top:10px;
-left:10px;
-cursor:pointer;
-background:white;
-padding:8px 12px;
-border-radius:6px;
-z-index:1001;
-}
-
-#menu{
-position:fixed;
-left:0;
-top:0;
-width:230px;
-height:100%;
-background:#1f1f1f;
-color:white;
-padding:25px;
-padding-top:70px;
-display:none;
-}
-
-#menu button{
-width:100%;
-padding:12px;
-margin:10px 0;
-border:none;
-background:#333;
-color:white;
-border-radius:6px;
-cursor:pointer;
-}
-
-#content{
-margin-left:60px;
-padding:20px;
-}
-
-input{
-padding:8px;
-margin:5px;
-}
-
-button{
-padding:10px;
-cursor:pointer;
-}
-
-</style>
 
 </head>
 
@@ -155,13 +96,15 @@ document.getElementById("plot").innerHTML="";
 
 let f=document.getElementById("func").value;
 
+let width=document.getElementById("content").offsetWidth-120;
+
 try{
 
 if(mode==="function"){
 
 functionPlot({
 target:"#plot",
-width:window.innerWidth-120,
+width:width,
 height:500,
 grid:true,
 data:[
@@ -177,7 +120,7 @@ let d=math.derivative(f,"x").toString();
 
 functionPlot({
 target:"#plot",
-width:window.innerWidth-120,
+width:width,
 height:500,
 grid:true,
 data:[
@@ -195,17 +138,15 @@ let b=parseFloat(document.getElementById("b").value);
 functionPlot({
 
 target:"#plot",
-width:window.innerWidth-120,
+width:width,
 height:500,
 grid:true,
 
 data:[
-
 {fn:f,color:"black"},
 {fn:f,range:[a,b],closed:true,color:"skyblue"},
 {fn:`${a}`,range:[-10,10],color:"black"},
 {fn:`${b}`,range:[-10,10],color:"black"}
-
 ]
 
 });
@@ -225,16 +166,14 @@ let tangent=`${slope}*(x-${x0})+${f0}`;
 functionPlot({
 
 target:"#plot",
-width:window.innerWidth-120,
+width:width,
 height:500,
 grid:true,
 
 data:[
-
 {fn:f,color:"black"},
 {fn:tangent,color:"red"},
 {points:[[x0,f0]],fnType:"points",color:"red"}
-
 ]
 
 });
@@ -248,15 +187,13 @@ let x0=parseFloat(document.getElementById("x0").value);
 functionPlot({
 
 target:"#plot",
-width:window.innerWidth-120,
+width:width,
 height:500,
 grid:true,
 
 data:[
-
 {fn:f,color:"black"},
 {fn:`${x0}`,range:[-10,10],color:"red"}
-
 ]
 
 });
@@ -264,25 +201,12 @@ data:[
 }
 
 }catch(e){
-
-alert("Fonksiyon hatalı olabilir.");
-
+console.log(e);
 }
 
 }
 
 document.getElementById("func").addEventListener("input",draw);
-
-document.addEventListener("click",function(e){
-
-let menu=document.getElementById("menu");
-let ham=document.getElementById("hamburger");
-
-if(!menu.contains(e.target) && !ham.contains(e.target)){
-menu.style.display="none";
-}
-
-});
 
 window.onload=draw;
 
