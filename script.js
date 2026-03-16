@@ -1,4 +1,3 @@
-```javascript
 let mode="function";
 
 function toggleMenu(){
@@ -168,7 +167,7 @@ document.getElementById("aiAnswer").innerText="AI düşünüyor...";
 try{
 
 let response = await fetch(
-"https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=AIzaSyDEUurJTYceMm4vfQU1Ifk9-1frD4Vtg9E"
+"https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=AIzaSyDEUurJTYceMm4vfQU1Ifk9-1frD4Vtg9E",
 {
 method:"POST",
 headers:{
@@ -185,20 +184,28 @@ text:"Bir matematik öğretmeni gibi adım adım çöz ve neden yaptığını a�
 }
 ]
 })
-});
+}
+);
 
 let data = await response.json();
 
 console.log(data);
 
+if(data.candidates){
+
 let ans = data.candidates[0].content.parts[0].text;
 
 document.getElementById("aiAnswer").innerText = ans;
 
-}
-catch(e){
+}else{
 
 document.getElementById("aiAnswer").innerText="AI cevap veremedi.";
+
+}
+
+}catch(e){
+
+document.getElementById("aiAnswer").innerText="Bağlantı hatası.";
 
 console.log(e);
 
@@ -207,4 +214,3 @@ console.log(e);
 }
 
 window.onload=draw;
-```
