@@ -146,7 +146,9 @@ target:"#plot",
 width:800,
 height:500,
 grid:true,
-data:[{fn:f}]
+data:[
+{fn:f}
+]
 });
 
 }
@@ -160,7 +162,9 @@ target:"#plot",
 width:800,
 height:500,
 grid:true,
-data:[{fn:d}]
+data:[
+{fn:d}
+]
 });
 
 }
@@ -180,37 +184,38 @@ grid:true,
 data:[
 
 {
-fn:f
+fn:f,
+color:"black"
 },
 
 {
 fn:f,
 range:[a,b],
 closed:true,
-color:"red"
+color:"skyblue"
+},
+
+{
+fn:`${a}`,
+range:[0,10],
+color:"black"
+},
+
+{
+fn:`${b}`,
+range:[0,10],
+color:"black"
 },
 
 {
 points:[[a,0]],
 fnType:"points",
-graphType:"scatter",
 color:"black"
 },
 
 {
 points:[[b,0]],
 fnType:"points",
-graphType:"scatter",
-color:"black"
-},
-
-{
-fn:`${a}`,
-color:"black"
-},
-
-{
-fn:`${b}`,
 color:"black"
 }
 
