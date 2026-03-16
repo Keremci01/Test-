@@ -83,7 +83,6 @@ padding:20px;
 
 <input id="a" type="number" placeholder="a" style="display:none">
 <input id="b" type="number" placeholder="b" style="display:none">
-
 <input id="x0" type="number" placeholder="x noktası" style="display:none">
 
 <button onclick="draw()">Grafiği Çiz</button>
@@ -134,7 +133,7 @@ document.getElementById("x0").style.display="inline";
 }
 
 if(mode==="limit"){
-document.getElementById("title").innerText="Limit Yaklaşımı";
+document.getElementById("title").innerText="Limit Grafiği";
 document.getElementById("x0").style.display="inline";
 }
 
@@ -150,6 +149,8 @@ functionPlot({
 target:"#plot",
 width:800,
 height:500,
+xAxis:{label:"x"},
+yAxis:{label:"y"},
 grid:true,
 data:[
 {fn:f}
@@ -166,6 +167,8 @@ functionPlot({
 target:"#plot",
 width:800,
 height:500,
+xAxis:{label:"x"},
+yAxis:{label:"y"},
 grid:true,
 data:[
 {fn:d}
@@ -184,6 +187,8 @@ functionPlot({
 target:"#plot",
 width:800,
 height:500,
+xAxis:{label:"x"},
+yAxis:{label:"y"},
 grid:true,
 
 data:[
@@ -192,9 +197,9 @@ data:[
 
 {fn:f,range:[a,b],closed:true,color:"skyblue"},
 
-{fn:`${a}`,range:[0,10],color:"black"},
+{fn:`${a}`,range:[-10,10],color:"black"},
 
-{fn:`${b}`,range:[0,10],color:"black"},
+{fn:`${b}`,range:[-10,10],color:"black"},
 
 {points:[[a,0]],fnType:"points",color:"black"},
 
@@ -221,6 +226,8 @@ functionPlot({
 target:"#plot",
 width:800,
 height:500,
+xAxis:{label:"x"},
+yAxis:{label:"y"},
 grid:true,
 
 data:[
@@ -246,6 +253,8 @@ functionPlot({
 target:"#plot",
 width:800,
 height:500,
+xAxis:{label:"x"},
+yAxis:{label:"y"},
 grid:true,
 
 data:[
