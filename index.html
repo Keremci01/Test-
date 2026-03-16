@@ -155,6 +155,15 @@ hideInputs()
 
 result.innerHTML=""
 
+func2.value=""
+func3.value=""
+
+if(m==="function"){
+
+title.innerText="Fonksiyon Grafiği"
+
+}
+
 if(m==="multi"){
 
 title.innerText="Çoklu Fonksiyon"
@@ -297,7 +306,6 @@ grid:true,
 data:[
 {fn:f},
 {fn:d}
-
 ]
 
 })
@@ -386,34 +394,41 @@ function downloadPNG(){
 
 let svg=document.querySelector("#plot svg")
 
-let serializer=new XMLSerializer()
+if(!svg){
+alert("Önce grafiği çiz")
+return
+}
 
+let serializer=new XMLSerializer()
 let source=serializer.serializeToString(svg)
 
 let img=new Image()
 
-img.src="data:image/svg+xml;base64,"+btoa(source)
+img.onload=function(){
 
 let canvas=document.createElement("canvas")
 
-canvas.width=800
+canvas.width=900
 canvas.height=500
 
 let ctx=canvas.getContext("2d")
 
-img.onload=function(){
+ctx.fillStyle="white"
+ctx.fillRect(0,0,canvas.width,canvas.height)
 
 ctx.drawImage(img,0,0)
 
-let a=document.createElement("a")
+let link=document.createElement("a")
 
-a.download="graph.png"
+link.download="grafik.png"
 
-a.href=canvas.toDataURL("image/png")
+link.href=canvas.toDataURL("image/png")
 
-a.click()
+link.click()
 
 }
+
+img.src="data:image/svg+xml;base64," + btoa(unescape(encodeURIComponent(source)))
 
 }
 
