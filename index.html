@@ -3,29 +3,89 @@
 <head>
 
 <meta charset="utf-8">
-<title>Math Calculator</title>
-
-<link rel="stylesheet" href="index.css">
+<title>Math Graph</title>
 
 <script src="https://cdn.jsdelivr.net/npm/function-plot/dist/function-plot.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/11.11.0/math.min.js"></script>
 
 <style>
 
-.submenu{display:none;margin-left:10px;}
+body{
+font-family:Arial;
+margin:0;
+background:#f4f6f9;
+}
 
-.dark{background:#121212;color:white;}
+#hamburger{
+font-size:28px;
+position:fixed;
+top:10px;
+left:10px;
+cursor:pointer;
+background:white;
+padding:8px 12px;
+border-radius:6px;
+}
 
-.dark button{background:#1e1e1e;color:white;}
+#menu{
+position:fixed;
+left:0;
+top:0;
+width:220px;
+height:100%;
+background:white;
+padding:20px;
+display:none;
+box-shadow:2px 0 10px rgba(0,0,0,0.2);
+}
+
+.submenu{
+display:none;
+margin-left:10px;
+}
+
+button{
+padding:8px 12px;
+margin:4px;
+border:none;
+background:#2d6cdf;
+color:white;
+border-radius:6px;
+cursor:pointer;
+}
+
+#content{
+margin-left:80px;
+padding:30px;
+}
+
+#plot{
+background:white;
+border-radius:10px;
+padding:20px;
+}
 
 #pngBtn{
 margin-top:10px;
 float:right;
 }
 
+.dark{
+background:#121212;
+color:white;
+}
+
+.dark #menu{
+background:#1e1e1e;
+}
+
+.dark #plot{
+background:#1e1e1e;
+}
+
 table{
-border-collapse:collapse;
 margin-top:20px;
+border-collapse:collapse;
 }
 
 td,th{
@@ -50,16 +110,17 @@ padding:6px;
 <div id="functionMenu" class="submenu">
 
 <button onclick="setMode('function')">Fonksiyon Grafiği</button>
-<button onclick="setMode('derivative')">Türev Grafiği</button>
-<button onclick="setMode('integral')">İntegral Alanı</button>
-<button onclick="setMode('tangent')">Teğet Doğrusu</button>
-<button onclick="setMode('limit')">Limit Grafiği</button>
+<button onclick="setMode('derivative')">Türev</button>
+<button onclick="setMode('integral')">İntegral</button>
+<button onclick="setMode('tangent')">Teğet</button>
+<button onclick="setMode('limit')">Limit</button>
+
 <button onclick="createTable()">Fonksiyon Tablosu</button>
 <button onclick="calculateDistance()">İki Nokta Mesafe</button>
 
 </div>
 
-<button onclick="toggleDark()">🌙 Dark Mode</button>
+<button onclick="toggleDark()">Dark Mode</button>
 
 </div>
 
@@ -69,9 +130,9 @@ padding:6px;
 
 <input id="func" value="x^2">
 
-<input id="a" type="number" placeholder="a" style="display:none">
-<input id="b" type="number" placeholder="b" style="display:none">
-<input id="x0" type="number" placeholder="x noktası" style="display:none">
+<input id="a" placeholder="a" type="number" style="display:none">
+<input id="b" placeholder="b" type="number" style="display:none">
+<input id="x0" placeholder="x noktası" type="number" style="display:none">
 
 <button onclick="draw()">Grafiği Çiz</button>
 
@@ -93,6 +154,7 @@ let points=[]
 function toggleMenu(){
 
 let m=document.getElementById("menu")
+
 m.style.display = m.style.display==="block" ? "none":"block"
 
 }
@@ -100,6 +162,7 @@ m.style.display = m.style.display==="block" ? "none":"block"
 function toggleFunctions(){
 
 let s=document.getElementById("functionMenu")
+
 s.style.display = s.style.display==="block" ? "none":"block"
 
 }
@@ -114,34 +177,37 @@ function setMode(m){
 
 mode=m
 
-toggleMenu()
-
 a.style.display="none"
 b.style.display="none"
 x0.style.display="none"
 
-if(mode==="function"){
-title.innerText="Fonksiyon Grafiği"
-}
+if(mode==="function") title.innerText="Fonksiyon Grafiği"
 
-if(mode==="derivative"){
-title.innerText="Türev Grafiği"
-}
+if(mode==="derivative") title.innerText="Türev Grafiği"
 
 if(mode==="integral"){
+
 title.innerText="İntegral Alanı"
+
 a.style.display="inline"
 b.style.display="inline"
+
 }
 
 if(mode==="tangent"){
+
 title.innerText="Teğet Doğrusu"
+
 x0.style.display="inline"
+
 }
 
 if(mode==="limit"){
-title.innerText="Limit Grafiği"
+
+title.innerText="Limit"
+
 x0.style.display="inline"
+
 }
 
 }
@@ -152,7 +218,7 @@ document.getElementById("plot").innerHTML=""
 
 let f=func.value
 
-let width=document.getElementById("content").offsetWidth-120
+let width=900
 
 try{
 
@@ -193,7 +259,7 @@ width:width,
 height:400,
 grid:true,
 data:[
-{fn:f,color:"black"},
+{fn:f},
 {fn:f,range:[A,B],closed:true,color:"skyblue"}
 ]
 })
@@ -241,7 +307,7 @@ data:[
 
 }
 
-setTimeout(addClickEvent,200)
+setTimeout(enablePointClick,200)
 
 }catch(e){
 console.log(e)
@@ -249,7 +315,7 @@ console.log(e)
 
 }
 
-function addClickEvent(){
+function enablePointClick(){
 
 let svg=document.querySelector("#plot svg")
 
@@ -292,7 +358,7 @@ let p2=points[points.length-2]
 
 let d=Math.sqrt((p1.x-p2.x)**2+(p1.y-p2.y)**2)
 
-distanceResult.innerText="Mesafe: "+d.toFixed(4)
+distanceResult.innerText="Mesafe = "+d.toFixed(4)
 
 }
 
@@ -334,7 +400,7 @@ let img=new Image()
 
 let canvas=document.createElement("canvas")
 
-canvas.width=800
+canvas.width=900
 canvas.height=400
 
 let ctx=canvas.getContext("2d")
