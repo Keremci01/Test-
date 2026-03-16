@@ -1,51 +1,55 @@
-/* GENEL SAYFA */
+/* SAYFA */
 
 body{
-font-family:Arial, Helvetica, sans-serif;
+font-family: 'Segoe UI', Arial, sans-serif;
 margin:0;
-background:#eef2f7;
+background:linear-gradient(135deg,#eef2f7,#dbeafe);
+color:#1f2937;
 }
 
-/* HAMBURGER MENÜ */
+/* HAMBURGER */
 
 #hamburger{
 font-size:26px;
 position:fixed;
-top:12px;
-left:12px;
+top:15px;
+left:15px;
 cursor:pointer;
 background:white;
-padding:8px 12px;
-border-radius:12px;
+padding:10px 14px;
+border-radius:14px;
 z-index:1001;
-box-shadow:0 4px 10px rgba(0,0,0,0.15);
+box-shadow:0 6px 14px rgba(0,0,0,0.15);
 transition:0.2s;
 }
 
-#hamburger:hover
+#hamburger:hover{
+transform:scale(1.05);
+background:#f3f4f6;
+}
 
-/* SOL MENÜ */
+/* MENÜ */
 
 #menu{
 position:fixed;
 left:0;
 top:0;
-width:230px;
+width:240px;
 height:100%;
-background:#1f2937;
+background:#111827;
 color:white;
-padding:25px;
-padding-top:70px;
+padding:30px;
+padding-top:80px;
 display:none;
-box-shadow:4px 0 15px rgba(0,0,0,0.25);
+box-shadow:4px 0 20px rgba(0,0,0,0.4);
 }
 
 /* MENÜ BAŞLIK */
 
 #menu h3{
 margin-top:0;
+font-size:22px;
 margin-bottom:20px;
-font-size:20px;
 }
 
 /* MENÜ BUTONLARI */
@@ -55,45 +59,58 @@ width:100%;
 padding:12px;
 margin:10px 0;
 border:none;
-background:#374151;
+background:#1f2937;
 color:white;
-border-radius:10px;
+border-radius:12px;
 cursor:pointer;
 font-size:15px;
-transition:0.2s;
+transition:0.25s;
 }
 
-#menu button:hover
+#menu button:hover{
+background:#374151;
+transform:translateX(4px);
+}
 
-/* İÇERİK */
+/* ANA İÇERİK */
 
 #content{
-margin-left:60px;
-padding:30px;
+margin-left:70px;
+padding:40px;
+}
+
+/* BAŞLIK */
+
+h2{
+font-size:28px;
+margin-bottom:20px;
 }
 
 /* INPUT */
 
 input{
-padding:10px;
+padding:10px 14px;
+border-radius:12px;
+border:1px solid #cbd5e1;
 font-size:15px;
-border-radius:10px;
-border:1px solid #d1d5db;
-margin-right:6px;
+margin-right:8px;
 outline:none;
 transition:0.2s;
 }
 
-input:focus
+input:focus{
+border-color:#3b82f6;
+box-shadow:0 0 6px rgba(59,130,246,0.3);
+}
 
-/* ANA BUTON */
+/* GRAFİĞİ ÇİZ BUTONU */
 
 button{
 background:#3b82f6;
 color:white;
 border:none;
 padding:12px 24px;
-font-size:16px;
+font-size:15px;
 border-radius:14px;
 cursor:pointer;
 box-shadow:0 6px 14px rgba(0,0,0,0.2);
@@ -103,14 +120,15 @@ transition:0.25s;
 button:hover{
 background:#2563eb;
 transform:translateY(-2px);
+box-shadow:0 8px 18px rgba(0,0,0,0.25);
 }
 
-/* GRAFİK */
+/* GRAFİK KUTUSU */
 
 #plot{
-margin-top:25px;
+margin-top:30px;
 background:white;
-padding:15px;
-border-radius:16px;
-box-shadow:0 6px 18px rgba(0,0,0,0.15);
+padding:20px;
+border-radius:18px;
+box-shadow:0 10px 25px rgba(0,0,0,0.2);
 }
