@@ -90,7 +90,10 @@ border:1px solid #444;
 
 <br><br>
 
-<button onclick="draw()">Grafiği Çiz</button> <button onclick="downloadPNG()">PNG indir</button>
+<div id="graphButtons">
+<button onclick="draw()">Grafiği Çiz</button>
+<button onclick="downloadPNG()">PNG indir</button>
+</div>
 
 <div id="plot"></div>
 <div id="result"></div>
@@ -180,6 +183,8 @@ plot.innerHTML=""
 result.innerHTML=""
 
 document.getElementById("calculator").style.display="none"
+document.getElementById("graphButtons").style.display="block"
+document.getElementById("plot").style.display="block"
 
 if(m==="function"){
 title.innerText="Fonksiyon Grafiği"
@@ -238,7 +243,11 @@ x0.style.display="inline"
 if(m==="calculator"){
 
 title.innerText="Hesap Makinesi"
+
 document.getElementById("calculator").style.display="block"
+document.getElementById("graphButtons").style.display="none"
+document.getElementById("plot").style.display="none"
+
 return
 
 }
