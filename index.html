@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+<meta charset="utf-8">
+<title>Math Tool</title>
+
+<script src="https://cdn.jsdelivr.net/npm/function-plot/dist/function-plot.js"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/11.11.0/math.min.js"></script>
+
+<style>
+
+body{
+font-family:Arial;
+margin:0;
+}
+
+#hamburger{
+font-size:30px;
+padding:10px;
+cursor:pointer;
+}
+
+#menu{
+position:fixed;
+left:0;
+top:0;
+width:220px;
+height:100%;
+background:#222;
+color:white;
+padding:20px;
+display:none;
+}
+
+#menu button{
+width:100%;
+padding:10px;
+margin:10px 0;
+font-size:16px;
+cursor:pointer;
+}
+
+#content{
+margin-left:20px;
+padding:20px;
+}
+
+#plot{
+width:800px;
+height:500px;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div id="hamburger" onclick="toggleMenu()">☰</div>
+
+<div id="menu">
+
+<h3>Menü</h3>
+
+<button onclick="showGraph()">Fonksiyon Grafiği</button> <button onclick="showDerivative()">Türev Grafiği</button>
+
+</div>
+
+<div id="content">
+
+<h2 id="title">Fonksiyon Grafiği</h2>
+
+<input id="func" value="x^2">
+
+<button onclick="draw()">Çiz</button>
+
+<div id="plot"></div>
+
+</div>
+
+<script>
+
+function toggleMenu(){
+
+var m=document.getElementById("menu");
+
+if(m.style.display==="block"){
+m.style.display="none";
+}else{
+m.style.display="block";
+}
+
+}
+
+function showGraph(){
+
+document.getElementById("title").innerHTML="Fonksiyon Grafiği";
+
+draw();
+
+}
+
+function showDerivative(){
+
+document.getElementById("title").innerHTML="Türev Grafiği";
+
+drawDerivative();
+
+}
+
+function draw(){
+
+var f=document.getElementById("func").value;
+
+functionPlot({
+target:'#plot',
+width:800,
+height:500,
+grid:true,
+data:[
+{fn:f}
+]
+});
+
+}
+
+function drawDerivative(){
+
+var f=document.getElementById("func").value;
+
+var d=math.derivative(f,"x").toString();
+
+functionPlot({
+target:'#plot',
+width:800,
+height:500,
+grid:true,
+data:[
+{fn:d}
+]
+});
+
+}
+
+window.onload=draw;
+
+</script>
+
+</body>
+</html>
