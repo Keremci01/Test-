@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-
 <html>
 <head>
 
@@ -9,7 +8,6 @@
 <link rel="stylesheet" href="index.css">
 
 <script src="https://cdn.jsdelivr.net/npm/function-plot/dist/function-plot.js"></script>
-
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/11.11.0/math.min.js"></script>
 
 <style>
@@ -52,9 +50,7 @@ border:1px solid #444;
 <div id="funcGroup" style="display:none">
 
 <button onclick="setMode('function')">Fonksiyon Grafiği</button>
-
 <button onclick="setMode('multi')">Çoklu Fonksiyon Çiz</button>
-
 <button onclick="setMode('distance')">İki Nokta Mesafe</button>
 
 </div>
@@ -64,11 +60,8 @@ border:1px solid #444;
 <div id="analysisGroup" style="display:none">
 
 <button onclick="setMode('derivative')">Türev</button>
-
 <button onclick="setMode('integral')">İntegral</button>
-
 <button onclick="setMode('tangent')">Teğet</button>
-
 <button onclick="setMode('limit')">Limit</button>
 
 </div>
@@ -88,6 +81,7 @@ border:1px solid #444;
 
 <input id="a" type="number" placeholder="a" style="display:none">
 <input id="b" type="number" placeholder="b" style="display:none">
+
 <input id="x0" type="number" placeholder="x noktası" style="display:none">
 
 <input id="x1" type="number" placeholder="x1" style="display:none">
@@ -97,7 +91,8 @@ border:1px solid #444;
 
 <br><br>
 
-<button onclick="draw()">Grafiği Çiz</button> <button onclick="downloadPNG()">PNG indir</button>
+<button onclick="draw()">Grafiği Çiz</button>
+<button onclick="downloadPNG()">PNG indir</button>
 
 <div id="plot"></div>
 
@@ -131,36 +126,35 @@ document.body.classList.toggle("dark")
 
 function hideInputs(){
 
-func2.style.display="none"
-func3.style.display="none"
+document.getElementById("func2").style.display="none"
+document.getElementById("func3").style.display="none"
 
-a.style.display="none"
-b.style.display="none"
+document.getElementById("a").style.display="none"
+document.getElementById("b").style.display="none"
 
-x0.style.display="none"
+document.getElementById("x0").style.display="none"
 
-x1.style.display="none"
-y1.style.display="none"
-x2.style.display="none"
-y2.style.display="none"
+document.getElementById("x1").style.display="none"
+document.getElementById("y1").style.display="none"
+document.getElementById("x2").style.display="none"
+document.getElementById("y2").style.display="none"
 
 }
 
 function clearInputs(){
 
-func.value=""
-func2.value=""
-func3.value=""
+document.getElementById("func2").value=""
+document.getElementById("func3").value=""
 
-a.value=""
-b.value=""
+document.getElementById("a").value=""
+document.getElementById("b").value=""
 
-x0.value=""
+document.getElementById("x0").value=""
 
-x1.value=""
-y1.value=""
-x2.value=""
-y2.value=""
+document.getElementById("x1").value=""
+document.getElementById("y1").value=""
+document.getElementById("x2").value=""
+document.getElementById("y2").value=""
 
 }
 
@@ -171,21 +165,19 @@ mode=m
 hideInputs()
 clearInputs()
 
-plot.innerHTML=""
-result.innerHTML=""
+document.getElementById("plot").innerHTML=""
+document.getElementById("result").innerHTML=""
 
 if(m==="function"){
-
 title.innerText="Fonksiyon Grafiği"
-
 }
 
 if(m==="multi"){
 
 title.innerText="Çoklu Fonksiyon"
 
-func2.style.display="inline"
-func3.style.display="inline"
+document.getElementById("func2").style.display="inline"
+document.getElementById("func3").style.display="inline"
 
 }
 
@@ -193,26 +185,24 @@ if(m==="distance"){
 
 title.innerText="İki Nokta Mesafe"
 
-x1.style.display="inline"
-y1.style.display="inline"
+document.getElementById("x1").style.display="inline"
+document.getElementById("y1").style.display="inline"
 
-x2.style.display="inline"
-y2.style.display="inline"
+document.getElementById("x2").style.display="inline"
+document.getElementById("y2").style.display="inline"
 
 }
 
 if(m==="derivative"){
-
 title.innerText="Türev Grafiği"
-
 }
 
 if(m==="integral"){
 
 title.innerText="İntegral Alanı"
 
-a.style.display="inline"
-b.style.display="inline"
+document.getElementById("a").style.display="inline"
+document.getElementById("b").style.display="inline"
 
 }
 
@@ -220,7 +210,7 @@ if(m==="tangent"){
 
 title.innerText="Teğet"
 
-x0.style.display="inline"
+document.getElementById("x0").style.display="inline"
 
 }
 
@@ -228,7 +218,7 @@ if(m==="limit"){
 
 title.innerText="Limit"
 
-x0.style.display="inline"
+document.getElementById("x0").style.display="inline"
 
 }
 
@@ -236,10 +226,15 @@ x0.style.display="inline"
 
 function draw(){
 
-plot.innerHTML=""
+let plot=document.getElementById("plot")
+let result=document.getElementById("result")
 
-let width=document.getElementById("plot").offsetWidth
-let f=func.value
+plot.innerHTML=""
+result.innerHTML=""
+
+let width=plot.offsetWidth
+
+let f=document.getElementById("func").value
 
 try{
 
@@ -253,7 +248,7 @@ height:400,
 grid:true,
 
 data:[
-{fn:f}
+{fn:f,sampler:"builtIn"}
 ]
 
 })
@@ -262,10 +257,15 @@ data:[
 
 if(mode==="multi"){
 
-let data=[{fn:f}]
+let data=[]
 
-if(func2.value!="") data.push({fn:func2.value})
-if(func3.value!="") data.push({fn:func3.value})
+if(f!="") data.push({fn:f,sampler:"builtIn"})
+
+let f2=document.getElementById("func2").value
+let f3=document.getElementById("func3").value
+
+if(f2!="") data.push({fn:f2,sampler:"builtIn"})
+if(f3!="") data.push({fn:f3,sampler:"builtIn"})
 
 functionPlot({
 
@@ -279,9 +279,127 @@ data:data
 
 }
 
+if(mode==="distance"){
+
+let x1=Number(document.getElementById("x1").value)
+let y1=Number(document.getElementById("y1").value)
+let x2=Number(document.getElementById("x2").value)
+let y2=Number(document.getElementById("y2").value)
+
+let d=Math.sqrt((x2-x1)**2+(y2-y1)**2)
+
+result.innerHTML="Mesafe = "+d
+
+functionPlot({
+
+target:"#plot",
+width:width,
+height:400,
+grid:true,
+
+data:[{
+
+points:[[x1,y1],[x2,y2]],
+fnType:"points",
+graphType:"scatter"
+
+}]
+
+})
+
+}
+
+if(mode==="derivative"){
+
+let d=math.derivative(f,"x").toString()
+
+result.innerHTML="f'(x) = "+d
+
+functionPlot({
+
+target:"#plot",
+width:width,
+height:400,
+grid:true,
+
+data:[
+{fn:f},
+{fn:d}
+]
+
+})
+
+}
+
+if(mode==="integral"){
+
+let a=Number(document.getElementById("a").value)
+let b=Number(document.getElementById("b").value)
+
+result.innerHTML="Alan ["+a+","+b+"]"
+
+functionPlot({
+
+target:"#plot",
+width:width,
+height:400,
+grid:true,
+
+data:[
+{fn:f},
+{fn:f,range:[a,b],closed:true}
+]
+
+})
+
+}
+
+if(mode==="tangent"){
+
+let x=Number(document.getElementById("x0").value)
+
+let derivative=math.derivative(f,"x")
+
+let slope=derivative.evaluate({x:x})
+
+let y=math.evaluate(f,{x:x})
+
+let tangent=slope+"*(x-"+x+")+"+y
+
+result.innerHTML="Teğet: "+tangent
+
+functionPlot({
+
+target:"#plot",
+width:width,
+height:400,
+grid:true,
+
+data:[
+{fn:f},
+{fn:tangent}
+]
+
+})
+
+}
+
+if(mode==="limit"){
+
+let x=Number(document.getElementById("x0").value)
+
+let f1=math.evaluate(f,{x:x+0.00001})
+let f2=math.evaluate(f,{x:x-0.00001})
+
+let lim=(f1+f2)/2
+
+result.innerHTML="Limit ≈ "+lim
+
+}
+
 }catch(e){
 
-console.log(e)
+result.innerHTML="Hata: "+e.message
 
 }
 
@@ -292,8 +410,11 @@ function downloadPNG(){
 let svg=document.querySelector("#plot svg")
 
 if(!svg){
+
 alert("Önce grafiği çiz")
+
 return
+
 }
 
 let rect=svg.getBoundingClientRect()
@@ -302,6 +423,7 @@ let width=rect.width
 let height=rect.height
 
 let serializer=new XMLSerializer()
+
 let source=serializer.serializeToString(svg)
 
 let img=new Image()
@@ -318,6 +440,7 @@ let ctx=canvas.getContext("2d")
 ctx.scale(3,3)
 
 ctx.fillStyle="white"
+
 ctx.fillRect(0,0,width,height)
 
 ctx.drawImage(img,0,0,width,height)
