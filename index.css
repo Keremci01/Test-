@@ -6,7 +6,7 @@ margin:0;
 background:#eef2f7;
 }
 
-/* HAMBURGER */
+/* HAMBURGER MENÜ */
 
 #hamburger{
 font-size:26px;
@@ -84,26 +84,23 @@ outline:none;
 transition:0.2s;
 }
 
-input:focus{
-border-color:#3b82f6;
-box-shadow:0 0 4px rgba(59,130,246,0.4);
-}
+input:focus
 
-/* ANA BUTON (Grafiği Çiz) */
+/* ANA BUTON */
 
-#content button{
+button{
 background:#3b82f6;
 color:white;
 border:none;
 padding:12px 24px;
 font-size:16px;
-border-radius:12px;
+border-radius:14px;
 cursor:pointer;
-box-shadow:0 5px 12px rgba(0,0,0,0.15);
-transition:0.2s;
+box-shadow:0 6px 14px rgba(0,0,0,0.2);
+transition:0.25s;
 }
 
-#content button:hover{
+button:hover{
 background:#2563eb;
 transform:translateY(-2px);
 }
