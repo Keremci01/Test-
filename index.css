@@ -1,0 +1,105 @@
+body{
+font-family:Arial;
+margin:0;
+background:#f4f6f9;
+}
+
+/* hamburger */
+
+#hamburger{
+font-size:28px;
+position:fixed;
+top:12px;
+left:12px;
+cursor:pointer;
+background:white;
+padding:8px 12px;
+border-radius:6px;
+box-shadow:0 2px 6px rgba(0,0,0,0.2);
+z-index:1001;
+}
+
+/* menu */
+
+#menu{
+position:fixed;
+left:0;
+top:0;
+width:230px;
+height:100%;
+background:#1f1f1f;
+color:white;
+padding:25px;
+padding-top:70px;
+display:none;
+z-index:1000;
+box-shadow:2px 0 10px rgba(0,0,0,0.3);
+}
+
+#menu h3{
+margin-left:35px;
+margin-bottom:25px;
+font-size:20px;
+}
+
+/* menu buttons */
+
+#menu button{
+width:100%;
+padding:12px;
+margin:10px 0;
+font-size:15px;
+border:none;
+border-radius:6px;
+background:#2e2e2e;
+color:white;
+cursor:pointer;
+transition:0.2s;
+}
+
+#menu button:hover{
+background:#3d3d3d;
+transform:translateX(5px);
+}
+
+/* content */
+
+#content{
+margin-left:50px;
+padding:25px;
+}
+
+/* input */
+
+input{
+padding:8px;
+font-size:15px;
+border-radius:6px;
+border:1px solid #ccc;
+}
+
+/* button */
+
+button{
+padding:8px 14px;
+border:none;
+background:#3b82f6;
+color:white;
+border-radius:6px;
+cursor:pointer;
+}
+
+button:hover{
+background:#2563eb;
+}
+
+/* graph */
+
+#plot{
+width:800px;
+height:500px;
+margin-top:20px;
+background:white;
+border-radius:10px;
+box-shadow:0 4px 12px rgba(0,0,0,0.15);
+}
