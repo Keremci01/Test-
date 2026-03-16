@@ -10,31 +10,6 @@
 <script src="https://cdn.jsdelivr.net/npm/function-plot/dist/function-plot.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/11.11.0/math.min.js"></script>
 
-<style>
-
-.dark{
-background:#121212;
-color:white;
-}
-
-.dark #menu{
-background:#0d1b2a;
-}
-
-.dark button{
-background:#1e1e1e;
-color:white;
-border:1px solid #444;
-}
-
-.dark input{
-background:#1e1e1e;
-color:white;
-border:1px solid #444;
-}
-
-</style>
-
 </head>
 
 <body>
@@ -47,26 +22,21 @@ border:1px solid #444;
 
 <button onclick="toggleGroup('funcGroup')">Fonksiyonlar ▼</button>
 
-<div id="funcGroup" style="display:none">
+<div id="funcGroup" class="group">
 
 <button onclick="setMode('function')">Fonksiyon Grafiği</button>
-
-<button onclick="setMode('multi')">Çoklu Fonksiyon Çiz</button>
-
+<button onclick="setMode('multi')">Çoklu Fonksiyon</button>
 <button onclick="setMode('distance')">İki Nokta Mesafe</button>
 
 </div>
 
 <button onclick="toggleGroup('analysisGroup')">Analiz ▼</button>
 
-<div id="analysisGroup" style="display:none">
+<div id="analysisGroup" class="group">
 
 <button onclick="setMode('derivative')">Türev</button>
-
 <button onclick="setMode('integral')">İntegral</button>
-
 <button onclick="setMode('tangent')">Teğet</button>
-
 <button onclick="setMode('limit')">Limit</button>
 
 </div>
@@ -84,14 +54,15 @@ border:1px solid #444;
 <input id="func2" placeholder="ikinci fonksiyon" style="display:none">
 <input id="func3" placeholder="üçüncü fonksiyon" style="display:none">
 
-<input id="a" type="number" placeholder="a" style="display:none">
-<input id="b" type="number" placeholder="b" style="display:none">
-<input id="x0" type="number" placeholder="x noktası" style="display:none">
+<input id="a" placeholder="a" style="display:none">
+<input id="b" placeholder="b" style="display:none">
 
-<input id="x1" type="number" placeholder="x1" style="display:none">
-<input id="y1" type="number" placeholder="y1" style="display:none">
-<input id="x2" type="number" placeholder="x2" style="display:none">
-<input id="y2" type="number" placeholder="y2" style="display:none">
+<input id="x0" placeholder="x noktası" style="display:none">
+
+<input id="x1" placeholder="x1" style="display:none">
+<input id="y1" placeholder="y1" style="display:none">
+<input id="x2" placeholder="x2" style="display:none">
+<input id="y2" placeholder="y2" style="display:none">
 
 <br><br>
 
@@ -110,9 +81,7 @@ let mode="function"
 
 function toggleMenu(){
 
-let m=document.getElementById("menu")
-
-m.style.display = m.style.display==="block" ? "none":"block"
+menu.classList.toggle("open")
 
 }
 
@@ -131,6 +100,8 @@ document.body.classList.toggle("dark")
 }
 
 function hideInputs(){
+
+func.style.display="inline"
 
 func2.style.display="none"
 func3.style.display="none"
@@ -155,6 +126,12 @@ hideInputs()
 
 result.innerHTML=""
 
+if(m==="function"){
+
+title.innerText="Fonksiyon Grafiği"
+
+}
+
 if(m==="multi"){
 
 title.innerText="Çoklu Fonksiyon"
@@ -168,6 +145,8 @@ if(m==="distance"){
 
 title.innerText="İki Nokta Mesafe"
 
+func.style.display="none"
+
 x1.style.display="inline"
 y1.style.display="inline"
 
@@ -178,13 +157,17 @@ y2.style.display="inline"
 
 if(m==="derivative"){
 
-title.innerText="Türev Grafiği"
+title.innerText="Türev"
+
+let d=math.derivative(func.value,"x").toString()
+
+func.value=d
 
 }
 
 if(m==="integral"){
 
-title.innerText="İntegral Alanı"
+title.innerText="İntegral"
 
 a.style.display="inline"
 b.style.display="inline"
@@ -230,9 +213,7 @@ width:width,
 height:400,
 grid:true,
 
-data:[
-{fn:f}
-]
+data:[{fn:f}]
 
 })
 
@@ -275,9 +256,7 @@ width:width,
 height:400,
 grid:true,
 
-data:[
-{points:[[X1,Y1],[X2,Y2]],fnType:"points"}
-]
+data:[{points:[[X1,Y1],[X2,Y2]],fnType:"points"}]
 
 })
 
@@ -297,7 +276,6 @@ grid:true,
 data:[
 {fn:f},
 {fn:d}
-
 ]
 
 })
@@ -317,7 +295,7 @@ height:400,
 grid:true,
 
 data:[
-{fn:f,color:"black"},
+{fn:f},
 {fn:f,range:[A,B],closed:true,color:"skyblue"}
 ]
 
@@ -386,22 +364,28 @@ function downloadPNG(){
 
 let svg=document.querySelector("#plot svg")
 
+if(!svg){
+
+alert("Önce grafiği çiz")
+
+return
+
+}
+
 let serializer=new XMLSerializer()
 
 let source=serializer.serializeToString(svg)
 
 let img=new Image()
 
-img.src="data:image/svg+xml;base64,"+btoa(source)
+img.onload=function(){
 
 let canvas=document.createElement("canvas")
 
-canvas.width=800
-canvas.height=500
+canvas.width=img.width
+canvas.height=img.height
 
 let ctx=canvas.getContext("2d")
-
-img.onload=function(){
 
 ctx.drawImage(img,0,0)
 
@@ -414,6 +398,8 @@ a.href=canvas.toDataURL("image/png")
 a.click()
 
 }
+
+img.src="data:image/svg+xml;base64,"+btoa(source)
 
 }
 
