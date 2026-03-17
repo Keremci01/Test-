@@ -132,28 +132,19 @@ border-radius:16px;
 box-shadow:0 10px 30px rgba(0,0,0,0.2);
 overflow:hidden;
 }
-/* COORDS (X Y GÖSTERGE) */
 
 #coords{
-margin-top:12px;
-font-weight:600;
+margin-top:12px !important;
+font-weight:600 !important;
 
-background:linear-gradient(135deg,#2563eb,#1d4ed8);
-color:white;
+background:linear-gradient(135deg,#2563eb,#1d4ed8) !important;
+color:white !important;
 
-padding:8px 14px;
-border-radius:12px;
+padding:8px 14px !important;
+border-radius:12px !important;
 
-box-shadow:0 6px 16px rgba(0,0,0,0.25);
+box-shadow:0 6px 16px rgba(0,0,0,0.25) !important;
 
-display:inline-block;
-font-size:14px;
-
-transition:0.25s;
-}
-
-/* hover efekti (butonlarla aynı hissiyat) */
-#coords:hover{
-transform:translateY(-2px);
-box-shadow:0 8px 20px rgba(0,0,0,0.3);
+display:inline-block !important;
+font-size:14px !important;
 }
