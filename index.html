@@ -3,7 +3,7 @@
 <head>
 
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- EKLENDİ -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <title>Math Calculator</title>
 
@@ -173,31 +173,38 @@ max-width:100%;
 
 let mode="function"
 
+function lockScroll(lock){
+document.body.style.overflow = lock ? "hidden" : "auto"
+}
+
 function toggleMenu(){
 let m=document.getElementById("menu")
 
 if(m.style.display==="block"){
 m.style.display="none"
+lockScroll(false)
 }else{
 m.style.display="block"
+lockScroll(true)
 }
 
 }
 
+// 🔥 FIXLENMİŞ
 function toggleGroup(id){
-
-// 🔥 hepsini kapat (FIX)
-document.querySelectorAll("#menu div").forEach(el=>{
-if(el.id.includes("Group")) el.style.display="none"
-})
 
 let g=document.getElementById(id)
 
 if(g.style.display==="block"){
 g.style.display="none"
-}else{
-g.style.display="block"
+return
 }
+
+document.querySelectorAll("#menu div").forEach(el=>{
+if(el.id.includes("Group")) el.style.display="none"
+})
+
+g.style.display="block"
 
 }
 
@@ -502,6 +509,11 @@ func.addEventListener("input", draw)
 func2.addEventListener("input", draw)
 func3.addEventListener("input", draw)
 
+// 📱 TOUCH FIX
+document.querySelectorAll("#menu button").forEach(btn=>{
+btn.addEventListener("touchstart",()=>{}, {passive:true})
+})
+
 // 🔥 MENU DIŞI CLICK FIX
 document.addEventListener("click",function(e){
 
@@ -510,6 +522,7 @@ let hamburger=document.getElementById("hamburger")
 
 if(!menu.contains(e.target) && !hamburger.contains(e.target)){
 menu.style.display="none"
+lockScroll(false)
 }
 
 })
