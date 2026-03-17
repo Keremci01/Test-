@@ -329,3 +329,46 @@ func2.addEventListener("input",debounce(draw,200))
 func3.addEventListener("input",debounce(draw,200))
 
 window.onload=()=>setTimeout(draw,100)
+
+function downloadPNG(){
+  const svg = document.querySelector("#plot svg");
+
+  if(!svg){
+    alert("Önce grafik çiz!");
+    return;
+  }
+
+  const serializer = new XMLSerializer();
+  const source = serializer.serializeToString(svg);
+
+  const img = new Image();
+  const svgBlob = new Blob([source], {type:"image/svg+xml;charset=utf-8"});
+  const url = URL.createObjectURL(svgBlob);
+
+  img.onload = function(){
+    const canvas = document.createElement("canvas");
+    canvas.width = svg.clientWidth;
+    canvas.height = svg.clientHeight;
+
+    const ctx = canvas.getContext("2d");
+
+    // beyaz arka plan (önemli)
+    ctx.fillStyle = "white";
+    ctx.fillRect(0,0,canvas.width,canvas.height);
+
+    ctx.drawImage(img,0,0);
+
+    URL.revokeObjectURL(url);
+
+    const link = document.createElement("a");
+    link.download = "grafik.png";
+    link.href = canvas.toDataURL("image/png");
+    link.click();
+  };
+
+  img.src = url;
+}
+
+canvas.width = svg.clientWidth * 2;
+canvas.height = svg.clientHeight * 2;
+ctx.scale(2,2);
