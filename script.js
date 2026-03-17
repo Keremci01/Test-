@@ -1,4 +1,3 @@
-
 /* ================= GLOBAL ================= */
 
 let mode="function"
@@ -8,12 +7,7 @@ let currentPlot=null
 
 function toggleMenu(){
 let m = document.getElementById("menu")
-
-if(m.classList.contains("active")){
-m.classList.remove("active")
-}else{
-m.classList.add("active")
-}
+m.classList.toggle("active")
 }
 
 function toggleGroup(id){
@@ -66,18 +60,21 @@ document.getElementById("plot").style.display="block"
 document.getElementById("graphButtons").style.display="block"
 func.style.display="inline"
 
+/* 🔥 FIX: BUTON KONTROL */
 let btn=document.getElementById("intersectBtn")
-btn.style.display="none"
+if(btn){
+btn.style.display = (m==="multi") ? "inline-block" : "none"
+}
 
+/* 🔥 TEXT FIX */
 if(m==="function"){
 title.innerText="Fonksiyon Grafiği"
 }
 
 if(m==="multi"){
-title.innerText="Çoklu Fonksiyon"
+title.innerText="Çoklu Fonksiyon Çizme"
 func2.style.display="inline"
 func3.style.display="inline"
-btn.style.display="inline-block"
 }
 
 if(m==="derivative"){
@@ -101,7 +98,7 @@ x0.style.display="inline"
 }
 
 if(m==="distance"){
-title.innerText="Mesafe"
+title.innerText="İki Nokta Arası Mesafe"
 x1.style.display="inline"
 y1.style.display="inline"
 x2.style.display="inline"
@@ -241,6 +238,7 @@ coords.innerText = `x: ${x.toFixed(2)} | y: ${y.toFixed(2)}`
 raf = null
 })
 }
+
 plot.onclick=function(e){
 
 let rect=plot.getBoundingClientRect()
@@ -298,7 +296,6 @@ rows+=`<tr>
 <td>${f1} = ${f2}</td>
 </tr>`
 }
- 
 }catch{}
 
 }
@@ -343,50 +340,56 @@ function debounce(f,d){
 let t;return()=>{clearTimeout(t);t=setTimeout(f,d)}
 }
 
-func.addEventListener("input",debounce(draw,200))
-func2.addEventListener("input",debounce(draw,200))
-func3.addEventListener("input",debounce(draw,200))
+/* 🔥 AUTO DRAW TÜM INPUTLAR */
+[func,func2,func3,x1,y1,x2,y2,a,b,x0].forEach(el=>{
+if(el){
+el.addEventListener("input", debounce(draw,200))
+}
+})
 
 window.onload=()=>setTimeout(draw,100)
 
+/* ================= PNG ================= */
+
 function downloadPNG(){
-  const svg = document.querySelector("#plot svg");
+const svg = document.querySelector("#plot svg");
 
-  if(!svg){
-    alert("Önce grafik çiz!");
-    return;
-  }
-
-  const serializer = new XMLSerializer();
-  const source = serializer.serializeToString(svg);
-
-  const img = new Image();
-  const svgBlob = new Blob([source], {type:"image/svg+xml;charset=utf-8"});
-  const url = URL.createObjectURL(svgBlob);
-
-  img.onload = function(){
-    const canvas = document.createElement("canvas");
-    canvas.width = svg.clientWidth;
-    canvas.height = svg.clientHeight;
-
-    const ctx = canvas.getContext("2d");
-
-    // beyaz arka plan (önemli)
-    ctx.fillStyle = "white";
-    ctx.fillRect(0,0,canvas.width,canvas.height);
-
-    ctx.drawImage(img,0,0);
-
-    URL.revokeObjectURL(url);
-
-    const link = document.createElement("a");
-    link.download = "grafik.png";
-    link.href = canvas.toDataURL("image/png");
-    link.click();
-  };
-
-  img.src = url;
+if(!svg){
+alert("Önce grafik çiz!");
+return;
 }
+
+const serializer = new XMLSerializer();
+const source = serializer.serializeToString(svg);
+
+const img = new Image();
+const svgBlob = new Blob([source], {type:"image/svg+xml;charset=utf-8"});
+const url = URL.createObjectURL(svgBlob);
+
+img.onload = function(){
+const canvas = document.createElement("canvas");
+canvas.width = svg.clientWidth;
+canvas.height = svg.clientHeight;
+
+const ctx = canvas.getContext("2d");
+
+ctx.fillStyle = "white";
+ctx.fillRect(0,0,canvas.width,canvas.height);
+
+ctx.drawImage(img,0,0);
+
+URL.revokeObjectURL(url);
+
+const link = document.createElement("a");
+link.download = "grafik.png";
+link.href = canvas.toDataURL("image/png");
+link.click();
+};
+
+img.src = url;
+}
+
+/* ================= UI ================= */
 
 function animateUI(){
 document.querySelectorAll(".fade-slide").forEach((el,i)=>{
@@ -397,16 +400,6 @@ el.classList.add("active")
 }
 
 window.addEventListener("load", function(){
-  animateUI();
-  draw();
+animateUI();
+draw();
 });
-
-function toggleMenu(){
-let menu = document.getElementById("menu");
-
-if(menu.style.display === "block"){
-menu.style.display = "none";
-}else{
-menu.style.display = "block";
-}
-}
