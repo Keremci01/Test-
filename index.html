@@ -37,15 +37,9 @@ color:white;
 background:#333 !important;
 }
 
-/* ANIMATION */
+/* plot animasyon (hafif) */
 #plot{
 transition:0.3s;
-animation:fadeIn 0.4s ease;
-}
-
-@keyframes fadeIn{
-from{opacity:0;transform:translateY(10px);}
-to{opacity:1;transform:translateY(0);}
 }
 
 /* coords */
@@ -65,6 +59,24 @@ border:1px solid #ddd;
 text-align:center;
 }
 
+/* MENU */
+#menu{
+position:fixed;
+top:0;
+left:0;
+width:250px;
+height:100%;
+background:white;
+
+transform:translateX(-100%);
+transition:0.3s;
+padding:10px;
+}
+
+#menu.active{
+transform:translateX(0);
+}
+
 </style>
 
 </head>
@@ -73,36 +85,34 @@ text-align:center;
 
 <div id="hamburger" onclick="toggleMenu()">☰</div>
 
+<!-- ✅ TÜM MENÜ İÇERİĞİ BURADA -->
 <div id="menu">
 
-<h3>Menü</h3>
+  <h3>Menü</h3>
 
-<button onclick="toggleGroup('funcGroup')">Fonksiyonlar ▼</button>
+  <button onclick="toggleGroup('funcGroup')">Fonksiyonlar ▼</button>
 
-<div id="funcGroup" style="display:none">
+  <div id="funcGroup" style="display:none">
+    <button onclick="setMode('function')">Fonksiyon Grafiği</button>
+    <button onclick="setMode('multi')">Çoklu Fonksiyon Çiz</button>
+    <button onclick="setMode('distance')">İki Nokta Mesafe</button>
+  </div>
 
-<button onclick="setMode('function')">Fonksiyon Grafiği</button>
-<button onclick="setMode('multi')">Çoklu Fonksiyon Çiz</button>
-<button onclick="setMode('distance')">İki Nokta Mesafe</button>
+  <button onclick="toggleGroup('analysisGroup')">Analiz ▼</button>
 
-</div>
+  <div id="analysisGroup" style="display:none">
+    <button onclick="setMode('derivative')">Türev</button>
+    <button onclick="setMode('integral')">İntegral</button>
+    <button onclick="setMode('tangent')">Teğet</button>
+    <button onclick="setMode('limit')">Limit</button>
+  </div>
 
-<button onclick="toggleGroup('analysisGroup')">Analiz ▼</button>
-
-<div id="analysisGroup" style="display:none">
-
-<button onclick="setMode('derivative')">Türev</button>
-<button onclick="setMode('integral')">İntegral</button>
-<button onclick="setMode('tangent')">Teğet</button>
-<button onclick="setMode('limit')">Limit</button>
-
-</div>
-
-<button onclick="setMode('calculator')">🧮 Hesap Makinesi</button>
-<button onclick="toggleDark()">🌙 Dark Mode</button>
+  <button onclick="setMode('calculator')">🧮 Hesap Makinesi</button>
+  <button onclick="toggleDark()">🌙 Dark Mode</button>
 
 </div>
 
+<!-- ANA İÇERİK -->
 <div id="content">
 
 <h2 id="title">Fonksiyon Grafiği</h2>
@@ -172,10 +182,7 @@ text-align:center;
 
 </div>
 
-<script>
-
-</script>
+<script src="script.js"></script>
 
 </body>
-<script src="script.js"></script>
 </html>
