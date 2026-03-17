@@ -7,56 +7,31 @@
 
 <title>Math Calculator</title>
 
-<link rel="stylesheet" href="index.css">
-
 <script src="https://cdn.jsdelivr.net/npm/function-plot/dist/function-plot.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/11.11.0/math.min.js"></script>
 
 <style>
 
-/* DARK MODE */
-.dark{
-background:#121212;
-color:white;
+/* GENEL */
+body{
+font-family:'Segoe UI', Arial, sans-serif;
+margin:0;
+background:linear-gradient(135deg,#eef2ff,#e0f2fe);
+color:#1f2937;
 }
 
-.dark #menu{
-background:#0d1b2a;
-}
-
-.dark #plot{
-background:#1e1e1e;
-}
-
-.dark table{
-background:#1e1e1e;
-color:white;
-}
-
-.dark th{
-background:#333 !important;
-}
-
-/* plot animasyon (hafif) */
-#plot{
-transition:0.3s;
-}
-
-/* coords */
-#coords{
-margin-top:10px;
-font-weight:bold;
-background:#111;
-color:#0f0;
-padding:8px;
-border-radius:8px;
-display:inline-block;
-}
-
-/* table */
-table td, table th{
-border:1px solid #ddd;
-text-align:center;
+/* HAMBURGER */
+#hamburger{
+font-size:26px;
+position:fixed;
+top:15px;
+left:15px;
+cursor:pointer;
+background:white;
+padding:10px 14px;
+border-radius:12px;
+z-index:1001;
+box-shadow:0 6px 15px rgba(0,0,0,0.2);
 }
 
 /* MENU */
@@ -66,15 +41,66 @@ top:0;
 left:0;
 width:250px;
 height:100%;
-background:white;
+background:#111827;
+color:white;
+padding:25px;
+padding-top:80px;
 
 transform:translateX(-100%);
 transition:0.3s;
-padding:10px;
+z-index:1000;
 }
 
 #menu.active{
 transform:translateX(0);
+}
+
+/* MENU BUTTON */
+#menu button{
+width:100%;
+padding:12px;
+margin:10px 0;
+background:#1f2937;
+color:white;
+border:none;
+border-radius:10px;
+cursor:pointer;
+}
+
+#menu button:hover{
+background:#2563eb;
+}
+
+/* CONTENT */
+#content{
+margin-left:60px;
+padding:40px;
+}
+
+/* INPUT */
+input{
+padding:10px;
+border-radius:10px;
+border:1px solid #ccc;
+}
+
+/* BUTTON */
+#content button{
+background:#2563eb;
+color:white;
+padding:10px 20px;
+border:none;
+border-radius:10px;
+cursor:pointer;
+}
+
+/* GRAPH */
+#plot{
+margin-top:30px;
+background:white;
+padding:20px;
+border-radius:16px;
+box-shadow:0 10px 30px rgba(0,0,0,0.2);
 }
 
 </style>
@@ -85,104 +111,72 @@ transform:translateX(0);
 
 <div id="hamburger" onclick="toggleMenu()">☰</div>
 
-<!-- ✅ TÜM MENÜ İÇERİĞİ BURADA -->
 <div id="menu">
 
-  <h3>Menü</h3>
+<h3>Menü</h3>
 
-  <button onclick="toggleGroup('funcGroup')">Fonksiyonlar ▼</button>
+<button onclick="toggleGroup('funcGroup')">Fonksiyonlar ▼</button>
 
-  <div id="funcGroup" style="display:none">
-    <button onclick="setMode('function')">Fonksiyon Grafiği</button>
-    <button onclick="setMode('multi')">Çoklu Fonksiyon Çiz</button>
-    <button onclick="setMode('distance')">İki Nokta Mesafe</button>
-  </div>
+<div id="funcGroup" style="display:none">
+<button onclick="setMode('function')">Fonksiyon Grafiği</button>
+<button onclick="setMode('multi')">Çoklu Fonksiyon</button>
+</div>
 
-  <button onclick="toggleGroup('analysisGroup')">Analiz ▼</button>
+<button onclick="toggleGroup('analysisGroup')">Analiz ▼</button>
 
-  <div id="analysisGroup" style="display:none">
-    <button onclick="setMode('derivative')">Türev</button>
-    <button onclick="setMode('integral')">İntegral</button>
-    <button onclick="setMode('tangent')">Teğet</button>
-    <button onclick="setMode('limit')">Limit</button>
-  </div>
-
-  <button onclick="setMode('calculator')">🧮 Hesap Makinesi</button>
-  <button onclick="toggleDark()">🌙 Dark Mode</button>
+<div id="analysisGroup" style="display:none">
+<button onclick="setMode('derivative')">Türev</button>
+<button onclick="setMode('integral')">İntegral</button>
+</div>
 
 </div>
 
-<!-- ANA İÇERİK -->
 <div id="content">
 
-<h2 id="title">Fonksiyon Grafiği</h2>
+<h2>Fonksiyon Grafiği</h2>
 
-<input id="func" placeholder="x^2">
-
-<input id="func2" placeholder="ikinci fonksiyon" style="display:none">
-<input id="func3" placeholder="üçüncü fonksiyon" style="display:none">
-
-<input id="a" type="number" placeholder="a" style="display:none">
-<input id="b" type="number" placeholder="b" style="display:none">
-
-<input id="x0" type="number" placeholder="x noktası" style="display:none">
-
-<input id="x1" type="number" placeholder="x1" style="display:none">
-<input id="y1" type="number" placeholder="y1" style="display:none">
-<input id="x2" type="number" placeholder="x2" style="display:none">
-<input id="y2" type="number" placeholder="y2" style="display:none">
+<input id="func" value="x^2">
 
 <br><br>
 
-<div id="graphButtons">
 <button onclick="draw()">Grafiği Çiz</button>
-<button onclick="downloadPNG()">PNG indir</button>
-<button id="intersectBtn" onclick="findIntersections()" style="display:none;">Kesişim Bul</button>
-</div>
 
 <div id="plot"></div>
 
-<div id="coords">x: 0 | y: 0</div>
-
-<div id="result"></div>
-
-<div id="tableContainer"></div>
-
-<div id="calculator" style="display:none; max-width:260px; margin-top:20px;">
-
-<input id="calcDisplay" style="width:100%;padding:10px;font-size:20px;margin-bottom:10px;" placeholder="0">
-
-<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;">
-
-<button onclick="calc('7')">7</button>
-<button onclick="calc('8')">8</button>
-<button onclick="calc('9')">9</button>
-<button onclick="calc('/')">÷</button>
-
-<button onclick="calc('4')">4</button>
-<button onclick="calc('5')">5</button>
-<button onclick="calc('6')">6</button>
-<button onclick="calc('*')">×</button>
-
-<button onclick="calc('1')">1</button>
-<button onclick="calc('2')">2</button>
-<button onclick="calc('3')">3</button>
-<button onclick="calc('-')">−</button>
-
-<button onclick="calc('0')">0</button>
-<button onclick="calc('.')">.</button>
-<button onclick="calculate()">=</button>
-<button onclick="calc('+')">+</button>
-
-<button onclick="clearCalc()">C</button>
-
 </div>
 
-</div>
+<script>
 
-</div>
+/* MENU */
+function toggleMenu(){
+document.getElementById("menu").classList.toggle("active");
+}
 
-<script src="script.js" defer></script>
+/* GROUP */
+function toggleGroup(id){
+let el = document.getElementById(id);
+el.style.display = (el.style.display === "none") ? "block" : "none";
+}
+
+/* GRAPH */
+function draw(){
+let func = document.getElementById("func").value;
+
+functionPlot({
+target:"#plot",
+width:500,
+height:400,
+grid:true,
+data:[{fn:func}]
+});
+}
+
+/* AUTO DRAW */
+window.onload = function(){
+draw();
+}
+
+</script>
 
 </body>
 </html>
