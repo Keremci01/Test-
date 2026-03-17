@@ -25,32 +25,20 @@ transition:0.2s;
 transform:scale(1.1);
 }
 
-/* SOL MENÜ (FIXLENDİ) */
+/* 🔥 MENÜ (STABİL ESKİ SİSTEM) */
 #menu{
 position:fixed;
 left:0;
 top:0;
 width:240px;
 height:100%;
-background:#111827; /* BEYAZ BUG GİTTİ */
+background:#111827;
 color:white;
 padding:25px;
 padding-top:80px;
-
-opacity:0;
-pointer-events:none;
-
-transform:translateX(-100%);
-transition: all 0.3s ease;
-
+display:none; /* 🔥 BUG YOK */
 box-shadow:4px 0 20px rgba(0,0,0,0.4);
 z-index:1000;
-}
-
-#menu.active{
-opacity:1;
-pointer-events:auto;
-transform:translateX(0);
 }
 
 /* MENÜ BAŞLIK */
@@ -60,7 +48,7 @@ margin-bottom:20px;
 font-size:22px;
 }
 
-/* MENÜ BUTONLARI (TEMİZ) */
+/* MENÜ BUTON */
 #menu button{
 width:100%;
 padding:12px;
@@ -74,7 +62,7 @@ font-size:15px;
 transition: all 0.2s ease;
 }
 
-/* 🔥 HOVER FIX + AYNI RENK + BÜYÜME */
+/* 🔥 HOVER (GRAFİĞİ ÇİZ İLE AYNI) */
 #menu button:hover{
 background:linear-gradient(135deg,#2563eb,#1d4ed8);
 color:white;
@@ -93,7 +81,7 @@ font-size:28px;
 margin-bottom:20px;
 }
 
-/* INPUTLAR */
+/* INPUT */
 input{
 padding:10px 14px;
 border-radius:10px;
@@ -127,7 +115,7 @@ background:linear-gradient(135deg,#1d4ed8,#1e40af);
 transform:translateY(-2px);
 }
 
-/* GRAFİK KUTUSU */
+/* GRAFİK */
 #plot{
 margin-top:30px;
 background:white;
@@ -135,9 +123,10 @@ padding:20px;
 border-radius:16px;
 box-shadow:0 10px 30px rgba(0,0,0,0.2);
 overflow:hidden;
-width:100%; /* BONUS: FULL GENİŞLİK */
+width:100%;
 }
 
+/* COORDS */
 #coords{
 color:#2563eb !important;
 background:none !important;
