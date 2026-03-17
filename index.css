@@ -1,6 +1,4 @@
-
 /* SAYFA GENEL */
-
 body{
 font-family:'Segoe UI', Arial, sans-serif;
 margin:0;
@@ -9,7 +7,6 @@ color:#1f2937;
 }
 
 /* HAMBURGER */
-
 #hamburger{
 font-size:26px;
 position:fixed;
@@ -28,32 +25,42 @@ transition:0.2s;
 transform:scale(1.1);
 }
 
-/* SOL MENÜ */
-
+/* SOL MENÜ (FIXLENDİ) */
 #menu{
 position:fixed;
 left:0;
 top:0;
 width:240px;
 height:100%;
-background:#111827;
+background:#111827; /* BEYAZ BUG GİTTİ */
 color:white;
 padding:25px;
 padding-top:80px;
-display:none;
+
+opacity:0;
+pointer-events:none;
+
+transform:translateX(-100%);
+transition: all 0.3s ease;
+
 box-shadow:4px 0 20px rgba(0,0,0,0.4);
+z-index:1000;
+}
+
+#menu.active{
+opacity:1;
+pointer-events:auto;
+transform:translateX(0);
 }
 
 /* MENÜ BAŞLIK */
-
 #menu h3{
 margin-top:0;
 margin-bottom:20px;
 font-size:22px;
 }
 
-/* MENÜ BUTONLARI */
-
+/* MENÜ BUTONLARI (TEMİZ) */
 #menu button{
 width:100%;
 padding:12px;
@@ -64,30 +71,29 @@ border:none;
 border-radius:10px;
 cursor:pointer;
 font-size:15px;
-transition:0.25s;
+transition: all 0.2s ease;
 }
 
+/* 🔥 HOVER FIX + AYNI RENK + BÜYÜME */
 #menu button:hover{
-background:#2563eb;
-transform:translateX(5px);
+background:linear-gradient(135deg,#2563eb,#1d4ed8);
+color:white;
+transform:translateX(5px) scale(1.05);
 }
 
 /* ANA İÇERİK */
-
 #content{
 margin-left:60px;
 padding:40px;
 }
 
 /* BAŞLIK */
-
 h2{
 font-size:28px;
 margin-bottom:20px;
 }
 
 /* INPUTLAR */
-
 input{
 padding:10px 14px;
 border-radius:10px;
@@ -104,7 +110,6 @@ box-shadow:0 0 6px rgba(59,130,246,0.4);
 }
 
 /* ANA BUTON */
-
 #content button{
 background:linear-gradient(135deg,#2563eb,#1d4ed8);
 color:white;
@@ -123,7 +128,6 @@ transform:translateY(-2px);
 }
 
 /* GRAFİK KUTUSU */
-
 #plot{
 margin-top:30px;
 background:white;
@@ -131,56 +135,13 @@ padding:20px;
 border-radius:16px;
 box-shadow:0 10px 30px rgba(0,0,0,0.2);
 overflow:hidden;
+width:100%; /* BONUS: FULL GENİŞLİK */
 }
 
 #coords{
 color:#2563eb !important;
-}
-
-#coords{
 background:none !important;
 box-shadow:none !important;
 padding:0 !important;
 border-radius:0 !important;
-}
-
-#menu{
-  position:fixed;
-  top:0;
-  left:0;
-  width:250px;
-  height:100%;
-  background:white;
-
-  opacity:0;
-  pointer-events:none;
-
-  transform:translateX(-100%);
-  transition: all 0.3s ease;
-}
-
-#menu.active{
-  opacity:1;
-  pointer-events:auto;
-  transform:translateX(0);
-}
-
-#menu button{
-transition:0.2s;
-}
-
-#menu button:hover{
-background:#2563eb !important;
-color:white;
-transform:translateX(5px);
-}
-
-#menu button{
-transition: all 0.2s ease;
-}
-
-#menu button:hover{
-background:#2563eb !important;
-color:white !important;
-transform:translateX(5px);
 }
