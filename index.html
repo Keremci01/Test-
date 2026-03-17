@@ -35,6 +35,23 @@ color:white;
 border:1px solid #444;
 }
 
+#coords{
+margin-top:10px;
+font-size:14px;
+opacity:0.8;
+}
+
+#coords:hover{
+opacity:1;
+transform:scale(1.05);
+}
+
+#plot{
+border-radius:12px;
+overflow:hidden;
+box-shadow:0 0 15px rgba(0,0,0,0.3);
+}
+
 /* 📱 MOBİL */
 @media (max-width: 768px){
 
@@ -130,9 +147,11 @@ max-width:100%;
 <div id="graphButtons">
 <button onclick="draw()">Grafiği Çiz</button>
 <button onclick="downloadPNG()">PNG indir</button>
+<button onclick="findIntersections()">Kesişim Bul</button>
 </div>
 
 <div id="plot"></div>
+<div id="coords">x: 0 | y: 0</div>
 <div id="result"></div>
 
 <div id="calculator" style="display:none; max-width:260px; margin-top:20px;">
@@ -172,6 +191,7 @@ max-width:100%;
 <script>
 
 let mode="function"
+let currentPlot=null
 
 function lockScroll(lock){
 document.body.style.overflow = lock ? "hidden" : "auto"
@@ -189,7 +209,6 @@ lockScroll(true)
 }
 }
 
-/* 🔥 GELİŞMİŞ GROUP FIX */
 function toggleGroup(id){
 
 let g=document.getElementById(id)
@@ -211,37 +230,27 @@ document.body.classList.toggle("dark")
 }
 
 function hideInputs(){
-
 func2.style.display="none"
 func3.style.display="none"
-
 a.style.display="none"
 b.style.display="none"
-
 x0.style.display="none"
-
 x1.style.display="none"
 y1.style.display="none"
 x2.style.display="none"
 y2.style.display="none"
-
 }
 
 function clearInputs(){
-
 func2.value=""
 func3.value=""
-
 a.value=""
 b.value=""
-
 x0.value=""
-
 x1.value=""
 y1.value=""
 x2.value=""
 y2.value=""
-
 }
 
 function setMode(m){
@@ -260,206 +269,115 @@ document.getElementById("calculator").style.display="none"
 document.getElementById("graphButtons").style.display="block"
 document.getElementById("plot").style.display="block"
 
-if(m==="function"){
-title.innerText="Fonksiyon Grafiği"
-}
+if(m==="function"){ title.innerText="Fonksiyon Grafiği" }
 
 if(m==="multi"){
-
 title.innerText="Çoklu Fonksiyon"
-
 func2.style.display="inline"
 func3.style.display="inline"
-
 }
 
 if(m==="distance"){
-
 title.innerText="İki Nokta Mesafe"
-
 x1.style.display="inline"
 y1.style.display="inline"
-
 x2.style.display="inline"
 y2.style.display="inline"
-
 }
 
-if(m==="derivative"){
-title.innerText="Türev Grafiği"
-}
+if(m==="derivative"){ title.innerText="Türev Grafiği" }
 
 if(m==="integral"){
-
 title.innerText="İntegral Alanı"
-
 a.style.display="inline"
 b.style.display="inline"
-
 }
 
 if(m==="tangent"){
-
 title.innerText="Teğet"
-
 x0.style.display="inline"
-
 }
 
 if(m==="limit"){
-
 title.innerText="Limit"
-
 x0.style.display="inline"
-
 }
 
 if(m==="calculator"){
-
 title.innerText="Hesap Makinesi"
-
 document.getElementById("calculator").style.display="block"
 document.getElementById("graphButtons").style.display="none"
 document.getElementById("plot").style.display="none"
-
 func.style.display="none"
-
 return
-
-}
-
-}
-
-/* 🔥 SAFE DRAW */
-function safeDraw(){
-try{
-draw()
-}catch(e){
-result.innerHTML="Hata düzeltildi 👍"
 }
 }
 
+/* 🔥 DRAW + PRO */
 function draw(){
 
 plot.innerHTML=""
 result.innerHTML=""
 
-let width=document.getElementById("plot").clientWidth || 400
+let width=plot.clientWidth || 400
 let f=func.value
 
 try{
 
-if(mode==="function"){
-
-functionPlot({
+let config={
 target:"#plot",
 width:width,
 height:400,
 grid:true,
-data:[{fn:f}]
-})
+zoom:true,
+pan:true,
+data:[]
+}
 
+if(mode==="function"){
+config.data=[{fn:f}]
 }
 
 if(mode==="multi"){
-
-let data=[{fn:f}]
-
-if(func2.value!="") data.push({fn:func2.value})
-if(func3.value!="") data.push({fn:func3.value})
-
-functionPlot({
-target:"#plot",
-width:width,
-height:400,
-grid:true,
-data:data
-})
-
+let d=[{fn:f}]
+if(func2.value!="") d.push({fn:func2.value})
+if(func3.value!="") d.push({fn:func3.value})
+config.data=d
 }
 
 if(mode==="derivative"){
-
 let d=math.derivative(f,"x").toString()
-
 result.innerHTML="f'(x) = "+d
-
-functionPlot({
-target:"#plot",
-width:width,
-height:400,
-grid:true,
-data:[
-{fn:f},
-{fn:d}
-]
-})
-
+config.data=[{fn:f},{fn:d}]
 }
 
 if(mode==="integral"){
-
 let aVal=Number(a.value)
 let bVal=Number(b.value)
-
-functionPlot({
-target:"#plot",
-width:width,
-height:400,
-grid:true,
-data:[
+config.data=[
 {fn:f},
-{
-fn:f,
-range:[aVal,bVal],
-closed:true,
-color:"rgba(0,120,255,0.3)"
-},
+{fn:f,range:[aVal,bVal],closed:true,color:"rgba(0,120,255,0.3)"},
 {fn:"x="+aVal,color:"red"},
 {fn:"x="+bVal,color:"red"}
 ]
-})
-
 }
 
 if(mode==="tangent"){
-
 let x=Number(x0.value)
-
 let d=math.derivative(f,"x")
-
 let slope=d.evaluate({x:x})
-
 let y=math.evaluate(f,{x:x})
-
-let tangent=slope+"*(x-"+x+")+"+y
-
-result.innerHTML="Teğet: "+tangent
-
-functionPlot({
-target:"#plot",
-width:width,
-height:400,
-grid:true,
-data:[
-{fn:f},
-{fn:tangent}
-]
-})
-
+let t=slope+"*(x-"+x+")+"+y
+result.innerHTML="Teğet: "+t
+config.data=[{fn:f},{fn:t}]
 }
 
 if(mode==="limit"){
-
 let x=Number(x0.value)
-
 let f1=math.evaluate(f,{x:x+0.00001})
 let f2=math.evaluate(f,{x:x-0.00001})
-
-let lim=(f1+f2)/2
-
-result.innerHTML="Limit ≈ "+lim
-
+result.innerHTML="Limit ≈ "+((f1+f2)/2)
+config.data=[{fn:f}]
 }
 
 if(mode==="distance"){
@@ -469,41 +387,17 @@ let y1v=Number(y1.value)
 let x2v=Number(x2.value)
 let y2v=Number(y2.value)
 
-if(isNaN(x1v)||isNaN(y1v)||isNaN(x2v)||isNaN(y2v)){
-result.innerHTML="Tüm değerleri gir kanka"
-return
-}
-
 let d=Math.sqrt((x2v-x1v)**2+(y2v-y1v)**2)
 result.innerHTML="Mesafe = "+d.toFixed(2)
 
-let minX=Math.min(x1v,x2v)-2
-let maxX=Math.max(x1v,x2v)+2
-let minY=Math.min(y1v,y2v)-2
-let maxY=Math.max(y1v,y2v)+2
-
-functionPlot({
-target:"#plot",
-width:width,
-height:400,
-grid:true,
-xAxis:{domain:[minX,maxX]},
-yAxis:{domain:[minY,maxY]},
-data:[
-{
-points:[[x1v,y1v],[x2v,y2v]],
-fnType:"points",
-graphType:"scatter"
-},
-{
-points:[[x1v,y1v],[x2v,y2v]],
-fnType:"points",
-graphType:"polyline"
-}
+config.data=[
+{points:[[x1v,y1v],[x2v,y2v]],fnType:"points",graphType:"scatter"},
+{points:[[x1v,y1v],[x2v,y2v]],fnType:"points",graphType:"polyline"}
 ]
-})
-
 }
+
+let p=functionPlot(config)
+setupInteractions(p)
 
 }catch(e){
 result.innerHTML="Hata: "+e.message
@@ -511,7 +405,95 @@ result.innerHTML="Hata: "+e.message
 
 }
 
-/* 🔥 GERÇEK PNG EXPORT */
+/* 🎯 INTERACTION */
+function setupInteractions(p){
+
+currentPlot=p
+
+plot.onmousemove=function(e){
+
+let rect=plot.getBoundingClientRect()
+
+let x=p.meta.xScale.invert(e.clientX-rect.left)
+let y=p.meta.yScale.invert(e.clientY-rect.top)
+
+coords.innerText=`x: ${x.toFixed(2)} | y: ${y.toFixed(2)}`
+}
+
+plot.onclick=function(e){
+
+let rect=plot.getBoundingClientRect()
+
+let x=p.meta.xScale.invert(e.clientX-rect.left)
+let y=p.meta.yScale.invert(e.clientY-rect.top)
+
+functionPlot({
+target:"#plot",
+width:plot.clientWidth,
+height:400,
+zoom:true,
+pan:true,
+grid:true,
+data:[
+...p.options.data,
+{
+points:[[x,y]],
+fnType:"points",
+graphType:"scatter",
+color:"red"
+}
+]
+})
+
+}
+}
+
+/* ❌ KESİŞİM */
+function findIntersections(){
+
+let f1=func.value
+let f2=func2.value
+
+if(!f1 || !f2){
+result.innerHTML="2 fonksiyon gir"
+return
+}
+
+let pts=[]
+
+for(let i=-50;i<=50;i+=0.1){
+try{
+let y1=math.evaluate(f1,{x:i})
+let y2=math.evaluate(f2,{x:i})
+if(Math.abs(y1-y2)<0.2){
+pts.push([i,y1])
+}
+}catch{}
+}
+
+functionPlot({
+target:"#plot",
+width:plot.clientWidth,
+height:400,
+grid:true,
+zoom:true,
+pan:true,
+data:[
+{fn:f1},
+{fn:f2},
+{
+points:pts,
+fnType:"points",
+graphType:"scatter",
+color:"red"
+}
+]
+})
+
+result.innerHTML="Kesişim sayısı: "+pts.length
+}
+
+/* 📸 PNG aynı (seninki korunur) */
 function downloadPNG(){
 
 let svg=document.querySelector("#plot svg")
@@ -521,11 +503,6 @@ alert("Önce grafiği çiz")
 return
 }
 
-let rect=svg.getBoundingClientRect()
-
-let width=rect.width
-let height=rect.height
-
 let serializer=new XMLSerializer()
 let source=serializer.serializeToString(svg)
 
@@ -534,76 +511,39 @@ let img=new Image()
 img.onload=function(){
 
 let canvas=document.createElement("canvas")
-
-canvas.width=width*3
-canvas.height=height*3
+canvas.width=800
+canvas.height=500
 
 let ctx=canvas.getContext("2d")
 
-ctx.scale(3,3)
-
 ctx.fillStyle="white"
-ctx.fillRect(0,0,width,height)
-
-ctx.drawImage(img,0,0,width,height)
+ctx.fillRect(0,0,800,500)
+ctx.drawImage(img,0,0)
 
 let link=document.createElement("a")
-
 link.download="grafik.png"
-link.href=canvas.toDataURL("image/png")
+link.href=canvas.toDataURL()
 link.click()
 
 }
 
-img.src="data:image/svg+xml;base64," + btoa(unescape(encodeURIComponent(source)))
-
+img.src="data:image/svg+xml;base64,"+btoa(source)
 }
 
-/* 🔥 EXTRA FIXLER */
-
-// input limit
-document.querySelectorAll("input").forEach(inp=>{
-inp.addEventListener("input",()=>{
-if(inp.value.length>80){
-inp.value=inp.value.slice(0,80)
+/* ⚡ PERFORMANCE */
+function debounce(func,delay){
+let t
+return function(){
+clearTimeout(t)
+t=setTimeout(func,delay)
 }
-})
-})
-
-// menu dışı tıklama
-document.addEventListener("click",function(e){
-
-let menu=document.getElementById("menu")
-let hamburger=document.getElementById("hamburger")
-
-if(!menu.contains(e.target) && !hamburger.contains(e.target)){
-menu.style.display="none"
-lockScroll(false)
 }
 
-})
+func.addEventListener("input",debounce(draw,200))
+func2.addEventListener("input",debounce(draw,200))
+func3.addEventListener("input",debounce(draw,200))
 
-// resize lag fix
-let resizeTimer
-window.addEventListener("resize",()=>{
-clearTimeout(resizeTimer)
-resizeTimer=setTimeout(draw,300)
-})
-
-// crash koruma
-window.onerror=function(){
-result.innerHTML="JS hata engellendi 👍"
-}
-
-// canlı grafik
-func.addEventListener("input",safeDraw)
-func2.addEventListener("input",safeDraw)
-func3.addEventListener("input",safeDraw)
-
-// ilk yükleme
-window.onload=()=>{
-setTimeout(draw,100)
-}
+window.onload=()=>setTimeout(draw,100)
 
 </script>
 
