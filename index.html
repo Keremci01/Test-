@@ -420,91 +420,26 @@ let y1v=Number(y1.value)
 let x2v=Number(x2.value)
 let y2v=Number(y2.value)
 
-// boş kontrol
-if(isNaN(x1v)||isNaN(y1v)||isNaN(x2v)||isNaN(y2v)){
-result.innerHTML="Tüm değerleri gir kanka"
-return
-}
+let d=Math.sqrt((x2v-x1v)**2+(y2v-y1v)**2)
 
-  let d=Math.sqrt((x2v-x1v)**2+(y2v-y1v)**2)
-result.innerHTML="Mesafe = "+d.toFixed(2)
-
-// 🔥 axis ayarı (en kritik)
-let minX=Math.min(x1v,x2v)-2
-let maxX=Math.max(x1v,x2v)+2
-let minY=Math.min(y1v,y2v)-2
-let maxY=Math.max(y1v,y2v)+2
+result.innerHTML="Mesafe = "+d
 
 functionPlot({
 target:"#plot",
 width:width,
 height:400,
 grid:true,
-
-xAxis:{domain:[minX,maxX]},
-yAxis:{domain:[minY,maxY]},
-
 data:[
-
-// noktalar
 {
 points:[[x1v,y1v],[x2v,y2v]],
 fnType:"points",
 graphType:"scatter"
-},
-
-// çizgi
-{
-points:[[x1v,y1v],[x2v,y2v]],
-fnType:"points",
-graphType:"polyline"
 }
-
 ]
 })
-}
-             
-// mesafe
-let d=Math.sqrt((x2v-x1v)**2+(y2v-y1v)**2)
-
-result.innerHTML="Mesafe = "+d.toFixed(2)
-
-// çizgi fonksiyonu (iki nokta arası doğru)
-let m=(y2v-y1v)/(x2v-x1v)
-let line=`${m}*(x-${x1v})+${y1v}`
-
-// dikey doğru kontrolü
-let isVertical = (x1v===x2v)
-
-let data=[
-
-// noktalar
-{
-points:[[x1v,y1v],[x2v,y2v]],
-fnType:"points",
-graphType:"scatter",
-color:"red"
-}
-
-]
-
-// eğer dikey değilse çizgi çiz
-if(!isVertical){
-data.push({fn:line,color:"blue"})
-}else{
-data.push({fn:`x=${x1v}`,color:"blue"})
-}
-
-functionPlot({
-target:"#plot",
-width:width,
-height:400,
-grid:true,
-data:data
-})
 
 }
-  
+
 }catch(e){
 
 result.innerHTML="Hata: "+e.message
