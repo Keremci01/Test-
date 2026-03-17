@@ -368,7 +368,3 @@ function downloadPNG(){
 
   img.src = url;
 }
-
-canvas.width = svg.clientWidth * 2;
-canvas.height = svg.clientHeight * 2;
-ctx.scale(2,2);
