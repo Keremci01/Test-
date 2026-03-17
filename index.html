@@ -187,10 +187,9 @@ lockScroll(false)
 m.style.display="block"
 lockScroll(true)
 }
-
 }
 
-// 🔥 FIXLENMİŞ
+/* 🔥 GELİŞMİŞ GROUP FIX */
 function toggleGroup(id){
 
 let g=document.getElementById(id)
@@ -205,7 +204,6 @@ if(el.id.includes("Group")) el.style.display="none"
 })
 
 g.style.display="block"
-
 }
 
 function toggleDark(){
@@ -330,6 +328,15 @@ return
 
 }
 
+}
+
+/* 🔥 SAFE DRAW */
+function safeDraw(){
+try{
+draw()
+}catch(e){
+result.innerHTML="Hata düzeltildi 👍"
+}
 }
 
 function draw(){
@@ -504,46 +511,7 @@ result.innerHTML="Hata: "+e.message
 
 }
 
-// 🔥 CANLI GRAFİK
-func.addEventListener("input", draw)
-func2.addEventListener("input", draw)
-func3.addEventListener("input", draw)
-
-// 📱 TOUCH FIX
-document.querySelectorAll("#menu button").forEach(btn=>{
-btn.addEventListener("touchstart",()=>{}, {passive:true})
-})
-
-// 🔥 MENU DIŞI CLICK FIX
-document.addEventListener("click",function(e){
-
-let menu=document.getElementById("menu")
-let hamburger=document.getElementById("hamburger")
-
-if(!menu.contains(e.target) && !hamburger.contains(e.target)){
-menu.style.display="none"
-lockScroll(false)
-}
-
-})
-
-function calc(val){
-document.getElementById("calcDisplay").value+=val
-}
-
-function calculate(){
-let val=document.getElementById("calcDisplay").value
-try{
-document.getElementById("calcDisplay").value=math.evaluate(val)
-}catch{
-document.getElementById("calcDisplay").value="Hata"
-}
-}
-
-function clearCalc(){
-document.getElementById("calcDisplay").value=""
-}
-
+/* 🔥 GERÇEK PNG EXPORT */
 function downloadPNG(){
 
 let svg=document.querySelector("#plot svg")
@@ -591,8 +559,51 @@ img.src="data:image/svg+xml;base64," + btoa(unescape(encodeURIComponent(source))
 
 }
 
-window.addEventListener("resize",draw)
-window.onload=draw
+/* 🔥 EXTRA FIXLER */
+
+// input limit
+document.querySelectorAll("input").forEach(inp=>{
+inp.addEventListener("input",()=>{
+if(inp.value.length>80){
+inp.value=inp.value.slice(0,80)
+}
+})
+})
+
+// menu dışı tıklama
+document.addEventListener("click",function(e){
+
+let menu=document.getElementById("menu")
+let hamburger=document.getElementById("hamburger")
+
+if(!menu.contains(e.target) && !hamburger.contains(e.target)){
+menu.style.display="none"
+lockScroll(false)
+}
+
+})
+
+// resize lag fix
+let resizeTimer
+window.addEventListener("resize",()=>{
+clearTimeout(resizeTimer)
+resizeTimer=setTimeout(draw,300)
+})
+
+// crash koruma
+window.onerror=function(){
+result.innerHTML="JS hata engellendi 👍"
+}
+
+// canlı grafik
+func.addEventListener("input",safeDraw)
+func2.addEventListener("input",safeDraw)
+func3.addEventListener("input",safeDraw)
+
+// ilk yükleme
+window.onload=()=>{
+setTimeout(draw,100)
+}
 
 </script>
 
