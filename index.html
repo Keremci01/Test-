@@ -20,6 +20,18 @@ background:linear-gradient(135deg,#eef2ff,#e0f2fe);
 color:#1f2937;
 }
 
+/* DARK MODE */
+.dark{
+background:#121212;
+color:white;
+}
+.dark #plot{
+background:#1e1e1e;
+}
+.dark #menu{
+background:#0d1b2a;
+}
+
 /* HAMBURGER */
 #hamburger{
 font-size:26px;
@@ -45,12 +57,10 @@ background:#111827;
 color:white;
 padding:25px;
 padding-top:80px;
-
 transform:translateX(-100%);
 transition:0.3s;
 z-index:1000;
 }
-
 #menu.active{
 transform:translateX(0);
 }
@@ -65,10 +75,6 @@ color:white;
 border:none;
 border-radius:10px;
 cursor:pointer;
-}
-
-#menu button:hover{
-background:#2563eb;
 }
 
 /* CONTENT */
@@ -97,8 +103,10 @@ cursor:pointer;
 /* GRAPH */
 #plot{
 margin-top:30px;
+width:100%;
+height:500px;
 background:white;
-padding:20px;
+padding:10px;
 border-radius:16px;
 box-shadow:0 10px 30px rgba(0,0,0,0.2);
 }
@@ -129,6 +137,10 @@ box-shadow:0 10px 30px rgba(0,0,0,0.2);
 <button onclick="setMode('integral')">İntegral</button>
 </div>
 
+<!-- ✅ EKLEDİK -->
+<button onclick="setMode('calculator')">🧮 Hesap Makinesi</button>
+<button onclick="toggleDark()">🌙 Dark Mode</button>
+
 </div>
 
 <div id="content">
@@ -142,6 +154,38 @@ box-shadow:0 10px 30px rgba(0,0,0,0.2);
 <button onclick="draw()">Grafiği Çiz</button>
 
 <div id="plot"></div>
+
+<!-- ✅ HESAP MAKİNESİ -->
+<div id="calculator" style="display:none; max-width:260px; margin-top:20px;">
+
+<input id="calcDisplay" style="width:100%;padding:10px;font-size:20px;margin-bottom:10px;" placeholder="0">
+
+<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;">
+
+<button onclick="calc('7')">7</button>
+<button onclick="calc('8')">8</button>
+<button onclick="calc('9')">9</button>
+<button onclick="calc('/')">÷</button>
+
+<button onclick="calc('4')">4</button>
+<button onclick="calc('5')">5</button>
+<button onclick="calc('6')">6</button>
+<button onclick="calc('*')">×</button>
+
+<button onclick="calc('1')">1</button>
+<button onclick="calc('2')">2</button>
+<button onclick="calc('3')">3</button>
+<button onclick="calc('-')">−</button>
+
+<button onclick="calc('0')">0</button>
+<button onclick="calc('.')">.</button>
+<button onclick="calculate()">=</button>
+<button onclick="calc('+')">+</button>
+
+<button onclick="clearCalc()">C</button>
+
+</div>
+</div>
 
 </div>
 
@@ -158,17 +202,45 @@ let el = document.getElementById(id);
 el.style.display = (el.style.display === "none") ? "block" : "none";
 }
 
-/* GRAPH */
+/* GRAPH FULL WIDTH */
 function draw(){
 let func = document.getElementById("func").value;
 
 functionPlot({
 target:"#plot",
-width:500,
-height:400,
+width: document.getElementById("plot").offsetWidth,
+height:500,
 grid:true,
 data:[{fn:func}]
 });
+}
+
+/* DARK MODE */
+function toggleDark(){
+document.body.classList.toggle("dark");
+}
+
+/* CALCULATOR */
+function setMode(mode){
+document.getElementById("calculator").style.display =
+(mode === "calculator") ? "block" : "none";
+}
+
+function calc(val){
+document.getElementById("calcDisplay").value += val;
+}
+
+function calculate(){
+try{
+document.getElementById("calcDisplay").value =
+eval(document.getElementById("calcDisplay").value);
+}catch{
+alert("Hatalı işlem");
+}
+}
+
+function clearCalc(){
+document.getElementById("calcDisplay").value = "";
 }
 
 /* AUTO DRAW */
