@@ -426,6 +426,43 @@ result.innerHTML="Tüm değerleri gir kanka"
 return
 }
 
+  let d=Math.sqrt((x2v-x1v)**2+(y2v-y1v)**2)
+result.innerHTML="Mesafe = "+d.toFixed(2)
+
+// 🔥 axis ayarı (en kritik)
+let minX=Math.min(x1v,x2v)-2
+let maxX=Math.max(x1v,x2v)+2
+let minY=Math.min(y1v,y2v)-2
+let maxY=Math.max(y1v,y2v)+2
+
+functionPlot({
+target:"#plot",
+width:width,
+height:400,
+grid:true,
+
+xAxis:{domain:[minX,maxX]},
+yAxis:{domain:[minY,maxY]},
+
+data:[
+
+// noktalar
+{
+points:[[x1v,y1v],[x2v,y2v]],
+fnType:"points",
+graphType:"scatter"
+},
+
+// çizgi
+{
+points:[[x1v,y1v],[x2v,y2v]],
+fnType:"points",
+graphType:"polyline"
+}
+
+]
+}
+             
 // mesafe
 let d=Math.sqrt((x2v-x1v)**2+(y2v-y1v)**2)
 
