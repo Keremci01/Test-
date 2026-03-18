@@ -135,3 +135,7 @@ box-shadow:none !important;
 padding:0 !important;
 border-radius:0 !important;
 }
+
+#menu.active{
+display:block;
+}
