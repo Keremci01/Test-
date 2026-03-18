@@ -27,15 +27,9 @@ function toggleMenu(){
 document.getElementById("menu").classList.toggle("active")
 }
 
-/* 🔥 FIX: ARTIK BİRDEN FAZLA GRUP AÇILABİLİR */
 function toggleGroup(id){
 let el = document.getElementById(id)
-
-if(el.style.display==="block"){
-el.style.display="none"
-}else{
-el.style.display="block"
-}
+el.style.display = (el.style.display==="block") ? "none" : "block"
 }
 
 /* ================= MODE ================= */
@@ -44,7 +38,6 @@ function setMode(m){
 
 mode=m
 
-/* 🔥 FIX: calcDisplay hariç tüm inputları gizle */
 document.querySelectorAll("input").forEach(i=>{
 if(i.id!=="calcDisplay"){
 i.style.display="none"
@@ -55,6 +48,13 @@ document.getElementById("calculator").style.display="none"
 plot.style.display="block"
 
 func.style.display="inline"
+
+/* 🔥 BUTON AYARI */
+let btn=document.getElementById("mainBtn")
+btn.innerText="Grafiği Çiz"
+btn.style.display="inline-block"
+
+/* MOD */
 
 if(m==="function"){
 title.innerText="Fonksiyon"
@@ -72,6 +72,9 @@ x1.style.display="inline"
 y1.style.display="inline"
 x2.style.display="inline"
 y2.style.display="inline"
+
+/* 🔥 BUTON TEXT */
+btn.innerText="Sonucu Bul"
 }
 
 if(m==="derivative"){
@@ -94,20 +97,29 @@ title.innerText="Limit"
 x0.style.display="inline"
 }
 
-/* 🔥 CALCULATOR FIX */
 if(m==="calculator"){
 title.innerText="Hesap Makinesi"
 
 document.getElementById("calculator").style.display="block"
 plot.style.display="none"
 
-/* input garanti görünür */
 document.getElementById("calcDisplay").style.display="block"
-
-/* func input gizle */
 func.style.display="none"
+
+/* 🔥 BUTON GİZLE */
+btn.style.display="none"
 }
 
+}
+
+/* ================= BUTTON LOGIC ================= */
+
+function handleMainButton(){
+if(mode==="distance"){
+calcDistance()
+}else{
+draw()
+}
 }
 
 /* ================= DRAW ================= */
@@ -175,24 +187,6 @@ result.innerHTML="Limit ≈ "+val.toFixed(4)
 data=[{fn:f}]
 }
 
-if(mode==="distance"){
-let x1v=Number(x1.value)
-let y1v=Number(y1.value)
-let x2v=Number(x2.value)
-let y2v=Number(y2.value)
-
-if([x1v,y1v,x2v,y2v].some(isNaN)) return
-
-let d=Math.sqrt((x2v-x1v)**2+(y2v-y1v)**2)
-result.innerHTML="Mesafe = "+d.toFixed(2)
-
-data=[{
-points:[[x1v,y1v],[x2v,y2v]],
-fnType:"points",
-graphType:"polyline"
-}]
-}
-
 functionPlot({
 target:"#plot",
 width:plot.clientWidth,
@@ -204,6 +198,45 @@ data:data
 }catch(e){
 result.innerHTML="Hata: "+e.message
 }
+
+}
+
+/* ================= DISTANCE ================= */
+
+function calcDistance(){
+
+let x1v=Number(x1.value)
+let y1v=Number(y1.value)
+let x2v=Number(x2.value)
+let y2v=Number(y2.value)
+
+if([x1v,y1v,x2v,y2v].some(isNaN)) return
+
+let d=Math.sqrt((x2v-x1v)**2+(y2v-y1v)**2)
+result.innerHTML="Mesafe = "+d.toFixed(2)
+
+plot.innerHTML=""
+
+functionPlot({
+target:"#plot",
+width:plot.clientWidth,
+height:500,
+grid:true,
+xAxis:{domain:[-10,10]},
+yAxis:{domain:[-10,10]},
+data:[
+{
+points:[[x1v,y1v],[x2v,y2v]],
+fnType:"points",
+graphType:"scatter"
+},
+{
+points:[[x1v,y1v],[x2v,y2v]],
+fnType:"points",
+graphType:"polyline"
+}
+]
+})
 
 }
 
