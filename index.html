@@ -2,106 +2,102 @@
 <html>
 <head>
 
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>Math Calculator</title>
+<meta charset="UTF-8">
+<title>Math Graph</title>
 
 <script src="https://cdn.jsdelivr.net/npm/function-plot/dist/function-plot.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/11.11.0/math.min.js"></script>
 
 <style>
 
-/* GENEL */
+/* BODY */
 body{
-font-family:'Segoe UI', Arial, sans-serif;
+font-family:Arial;
 margin:0;
-background:linear-gradient(135deg,#eef2ff,#e0f2fe);
-color:#1f2937;
+background:#f4f6f9;
 }
 
-/* DARK */
-.dark{
-background:#121212;
-color:white;
+/* HAMBURGER */
+#hamburger{
+font-size:28px;
+position:fixed;
+top:10px;
+left:10px;
+cursor:pointer;
+background:white;
+padding:8px 12px;
+border-radius:10px;
+z-index:1000;
 }
-.dark #plot{background:#1e1e1e;}
-.dark #menu{background:#0d1b2a;}
 
 /* MENU */
 #menu{
 position:fixed;
+left:-260px;
 top:0;
-left:0;
 width:250px;
 height:100%;
-background:#111827;
+background:#1e293b;
 color:white;
-padding:25px;
-padding-top:80px;
-transform:translateX(-100%);
+padding:20px;
 transition:0.3s;
+z-index:999;
 }
-#menu.active{transform:translateX(0);}
 
-/* MENU BUTTON */
+#menu.active{
+left:0;
+}
+
 #menu button{
 width:100%;
-padding:12px;
-margin:10px 0;
-background:#1f2937;
+margin:8px 0;
+padding:10px;
+background:#334155;
 color:white;
 border:none;
-border-radius:10px;
+border-radius:8px;
 cursor:pointer;
-transition:0.2s;
-font-family:'Segoe UI', Arial, sans-serif;
-}
-#menu button:hover{
-background:#2563eb;
-transform:translateX(5px);
 }
 
 /* CONTENT */
 #content{
-margin-left:60px;
-padding:40px;
+margin-left:70px;
+padding:20px;
 }
 
-/* TOP BUTTONS */
-#topButtons{
-margin-bottom:20px;
-display:flex;
-gap:10px;
+/* INPUT */
+input{
+padding:8px;
+margin:5px;
+border-radius:6px;
+border:1px solid #ccc;
 }
 
 /* BUTTON */
 button{
+padding:8px 15px;
+border:none;
+border-radius:8px;
 background:#2563eb;
 color:white;
-padding:10px 20px;
-border:none;
-border-radius:10px;
 cursor:pointer;
-}
-button:hover{
-background:#1e40af;
 }
 
 /* GRAPH */
 #plot{
-margin-top:20px;
-width:100%;
-height:500px;
 background:white;
-border-radius:16px;
+margin-top:20px;
+border-radius:12px;
 }
 
 /* TABLE */
-table,td,th{
-border:1px solid #ccc;
+table{
+margin-top:20px;
+border-collapse:collapse;
+width:100%;
 }
 td,th{
+border:1px solid #ccc;
 padding:6px;
 text-align:center;
 }
@@ -112,29 +108,19 @@ text-align:center;
 
 <body>
 
+<div id="hamburger" onclick="toggleMenu()">☰</div>
+
 <div id="menu">
 
 <h3>Menü</h3>
 
-<button onclick="toggleGroup('funcGroup')">Fonksiyonlar ▼</button>
-
-<div id="funcGroup" style="display:none">
-<button onclick="setMode('function')">Fonksiyon Grafiği</button>
-<button onclick="setMode('multi')">Çoklu Fonksiyon Çizme</button>
-</div>
-
-<button onclick="toggleGroup('analysisGroup')">Analiz ▼</button>
-
-<div id="analysisGroup" style="display:none">
+<button onclick="setMode('function')">Fonksiyon</button>
+<button onclick="setMode('multi')">Çoklu Fonksiyon</button>
 <button onclick="setMode('derivative')">Türev</button>
 <button onclick="setMode('integral')">İntegral</button>
 <button onclick="setMode('tangent')">Teğet</button>
-<button onclick="setMode('limit')">Limit</button>
-<button onclick="setMode('distance')">İki Nokta Arası Mesafe</button>
-</div>
-
-<button onclick="setMode('calculator')">🧮 Hesap Makinesi</button>
-<button onclick="toggleDark()">🌙 Dark Mode</button>
+<button onclick="setMode('distance')">Mesafe</button>
+<button onclick="setMode('calculator')">Hesap Makinesi</button>
 
 </div>
 
@@ -142,6 +128,7 @@ text-align:center;
 
 <h2 id="title">Fonksiyon Grafiği</h2>
 
+<!-- INPUTLAR -->
 <input id="func" value="x^2">
 <input id="func2" style="display:none">
 <input id="func3" style="display:none">
@@ -156,11 +143,14 @@ text-align:center;
 <input id="x2" placeholder="x2" style="display:none">
 <input id="y2" placeholder="y2" style="display:none">
 
-<div id="topButtons">
+<br><br>
+
+<!-- BUTONLAR -->
 <button onclick="draw()">Grafiği Çiz</button>
 <button onclick="downloadPNG()">PNG İndir</button>
-<button id="intersectBtn" onclick="findIntersections()" style="display:none">Kesişim Bul</button>
-</div>
+<button id="intersectBtn" onclick="findIntersections()" style="display:none">
+Kesişim Bul
+</button>
 
 <div id="plot"></div>
 
@@ -169,7 +159,7 @@ text-align:center;
 
 <!-- CALCULATOR -->
 <div id="calculator" style="display:none;margin-top:20px;">
-<input id="calcDisplay" style="width:200px;margin-bottom:10px;"><br>
+<input id="calcDisplay"><br>
 
 <button onclick="calc('7')">7</button>
 <button onclick="calc('8')">8</button>
@@ -198,36 +188,53 @@ text-align:center;
 
 <script>
 
-/* MODE */
 let mode="function"
 
-function toggleGroup(id){
-let g=document.getElementById(id)
-g.style.display = g.style.display==="block" ? "none":"block"
+/* MENU */
+function toggleMenu(){
+menu.classList.toggle("active")
 }
 
-function toggleDark(){
-document.body.classList.toggle("dark")
-}
-
+/* MODE */
 function setMode(m){
 mode=m
 
-document.getElementById("calculator").style.display="none"
-document.getElementById("plot").style.display="block"
+// reset
+func2.style.display="none"
+func3.style.display="none"
+a.style.display="none"
+b.style.display="none"
+x0.style.display="none"
+x1.style.display="none"
+y1.style.display="none"
+x2.style.display="none"
+y2.style.display="none"
+calculator.style.display="none"
+plot.style.display="block"
 
-intersectBtn.style.display=(m==="multi")?"inline-block":"none"
+intersectBtn.style.display="none"
 
-title.innerText={
-function:"Fonksiyon Grafiği",
-multi:"Çoklu Fonksiyon Çizme",
-derivative:"Türev",
-integral:"İntegral",
-tangent:"Teğet",
-limit:"Limit",
-distance:"İki Nokta Arası Mesafe",
-calculator:"Hesap Makinesi"
-}[m]
+if(m==="multi"){
+func2.style.display="inline"
+func3.style.display="inline"
+intersectBtn.style.display="inline"
+}
+
+if(m==="integral"){
+a.style.display="inline"
+b.style.display="inline"
+}
+
+if(m==="tangent"){
+x0.style.display="inline"
+}
+
+if(m==="distance"){
+x1.style.display="inline"
+y1.style.display="inline"
+x2.style.display="inline"
+y2.style.display="inline"
+}
 
 if(m==="calculator"){
 calculator.style.display="block"
@@ -239,9 +246,11 @@ draw()
 
 /* DRAW */
 function draw(){
+
 let f=func.value
 
 try{
+
 let data=[{fn:f}]
 
 if(mode==="multi"){
@@ -260,22 +269,24 @@ data:data
 }catch(e){
 result.innerHTML=e.message
 }
+
 }
 
 /* INTERSECTION */
 function findIntersections(){
+
 let f1=func.value
 let f2=func2.value
 
-let pts=[]
 let rows=""
+let pts=[]
 
 for(let i=-50;i<=50;i+=0.1){
 try{
 let y1=math.evaluate(f1,{x:i})
 let y2=math.evaluate(f2,{x:i})
 
-if(Math.abs(y1-y2)<0.15){
+if(Math.abs(y1-y2)<0.1){
 pts.push([i,y1])
 rows+=`<tr><td>${i.toFixed(2)}</td><td>${y1.toFixed(2)}</td></tr>`
 }
@@ -294,6 +305,7 @@ data:[
 })
 
 tableContainer.innerHTML=`<table><tr><th>X</th><th>Y</th></tr>${rows}</table>`
+
 }
 
 /* CALC */
@@ -306,7 +318,7 @@ function downloadPNG(){
 alert("PNG indir aktif 👍")
 }
 
-/* AUTO */
+/* AUTO DRAW */
 window.onload=()=>setTimeout(draw,100)
 
 </script>
