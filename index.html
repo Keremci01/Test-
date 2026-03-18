@@ -1,84 +1,97 @@
 <!DOCTYPE html>
-<html lang="tr">
+<html>
 <head>
-<meta charset="UTF-8">
+<meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Math App</title>
-
-<link rel="stylesheet" href="index.css">
+<title>Math Calculator</title>
 
 <script src="https://cdn.jsdelivr.net/npm/function-plot/dist/function-plot.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/11.11.0/math.min.js"></script>
+
+<link rel="stylesheet" href="index.css">
 </head>
 
 <body>
 
-<!-- HAMBURGER -->
 <div id="hamburger" onclick="toggleMenu()">☰</div>
 
-<!-- MENU -->
 <div id="menu">
-  <h3>Menü</h3>
-  <button onclick="setMode('function')">Fonksiyon</button>
-  <button onclick="setMode('integral')">İntegral</button>
-  <button onclick="setMode('calculator')">Hesap Makinesi</button>
+<h3>Menü</h3>
+
+<button onclick="toggleGroup('funcGroup')">Fonksiyonlar ▼</button>
+<div id="funcGroup" style="display:none">
+<button onclick="setMode('function')">Fonksiyon</button>
+<button onclick="setMode('multi')">Çoklu Fonksiyon</button>
+<button onclick="setMode('distance')">İki Nokta Arası Mesafe</button>
 </div>
 
-<!-- CONTENT -->
+<button onclick="toggleGroup('analysisGroup')">Analiz ▼</button>
+<div id="analysisGroup" style="display:none">
+<button onclick="setMode('derivative')">Türev</button>
+<button onclick="setMode('integral')">İntegral</button>
+<button onclick="setMode('tangent')">Teğet</button>
+<button onclick="setMode('limit')">Limit</button>
+</div>
+
+<button onclick="setMode('calculator')">🧮 Hesap Makinesi</button>
+<button onclick="toggleDark()">🌙 Dark Mode</button>
+</div>
+
 <div id="content">
 
-  <h2 id="title">Fonksiyon</h2>
+<h2 id="title">Fonksiyon</h2>
 
-  <!-- FONKSİYON -->
-  <div id="functionInputs">
-    <input id="func" placeholder="x^2">
-  </div>
+<input id="func" value="x^2">
+<input id="func2" placeholder="f2" style="display:none">
+<input id="func3" placeholder="f3" style="display:none">
 
-  <!-- İNTEGRAL -->
-  <div id="integralInputs" style="display:none;">
-    <input id="intFunc" placeholder="x^2">
-    <input id="a" placeholder="a">
-    <input id="b" placeholder="b">
-  </div>
+<input id="x1" placeholder="x1" style="display:none">
+<input id="y1" placeholder="y1" style="display:none">
+<input id="x2" placeholder="x2" style="display:none">
+<input id="y2" placeholder="y2" style="display:none">
 
-  <!-- CALCULATOR -->
-  <div id="calculator" style="display:none;">
-    <input id="calcDisplay" readonly>
+<input id="a" placeholder="a" style="display:none">
+<input id="b" placeholder="b" style="display:none">
 
-    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:10px;">
-      <button onclick="calc('7')">7</button>
-      <button onclick="calc('8')">8</button>
-      <button onclick="calc('9')">9</button>
-      <button onclick="calc('/')">÷</button>
+<input id="x0" placeholder="x noktası" style="display:none">
 
-      <button onclick="calc('4')">4</button>
-      <button onclick="calc('5')">5</button>
-      <button onclick="calc('6')">6</button>
-      <button onclick="calc('*')">×</button>
+<br><br>
 
-      <button onclick="calc('1')">1</button>
-      <button onclick="calc('2')">2</button>
-      <button onclick="calc('3')">3</button>
-      <button onclick="calc('-')">−</button>
+<button onclick="draw()">Grafiği Çiz</button>
 
-      <button onclick="calc('0')">0</button>
-      <button onclick="calc('.')">.</button>
-      <button onclick="calculate()">=</button>
-      <button onclick="calc('+')">+</button>
+<div id="plot"></div>
+<div id="result"></div>
 
-      <button onclick="clearCalc()">C</button>
-    </div>
-  </div>
+<!-- CALC -->
+<div id="calculator" style="display:none; max-width:260px; margin-top:20px;">
+<input id="calcDisplay" style="width:100%;padding:10px;font-size:20px;margin-bottom:10px;">
+<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;">
+<button onclick="calc('7')">7</button>
+<button onclick="calc('8')">8</button>
+<button onclick="calc('9')">9</button>
+<button onclick="calc('/')">÷</button>
 
-  <!-- DRAW BUTTON -->
-  <button id="drawBtn" onclick="draw()">Grafiği Çiz</button>
+<button onclick="calc('4')">4</button>
+<button onclick="calc('5')">5</button>
+<button onclick="calc('6')">6</button>
+<button onclick="calc('*')">×</button>
 
-  <div id="plot"></div>
-  <div id="result"></div>
+<button onclick="calc('1')">1</button>
+<button onclick="calc('2')">2</button>
+<button onclick="calc('3')">3</button>
+<button onclick="calc('-')">−</button>
+
+<button onclick="calc('0')">0</button>
+<button onclick="calc('.')">.</button>
+<button onclick="calculate()">=</button>
+<button onclick="calc('+')">+</button>
+
+<button onclick="clearCalc()">C</button>
+</div>
+</div>
 
 </div>
 
 <script src="script.js"></script>
-
 </body>
 </html>
