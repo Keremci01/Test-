@@ -1,119 +1,14 @@
 <!DOCTYPE html>
 <html>
 <head>
-
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
 <title>Math Calculator</title>
 
 <script src="https://cdn.jsdelivr.net/npm/function-plot/dist/function-plot.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/11.11.0/math.min.js"></script>
 
-<style>
-
-/* GENEL */
-body{
-font-family:'Segoe UI', Arial, sans-serif;
-margin:0;
-background:linear-gradient(135deg,#eef2ff,#e0f2fe);
-color:#1f2937;
-}
-
-/* DARK MODE */
-.dark{
-background:#121212;
-color:white;
-}
-.dark #plot{background:#1e1e1e;}
-.dark #menu{background:#0d1b2a;}
-
-/* HAMBURGER */
-#hamburger{
-font-size:26px;
-position:fixed;
-top:15px;
-left:15px;
-cursor:pointer;
-background:white;
-padding:10px 14px;
-border-radius:12px;
-z-index:1001;
-box-shadow:0 6px 15px rgba(0,0,0,0.2);
-}
-
-/* MENU */
-#menu{
-position:fixed;
-top:0;
-left:0;
-width:250px;
-height:100%;
-background:#111827;
-color:white;
-padding:25px;
-padding-top:80px;
-transform:translateX(-100%);
-transition:0.3s;
-z-index:1000;
-}
-#menu.active{transform:translateX(0);}
-
-/* MENU BUTTON */
-#menu button{
-width:100%;
-padding:12px;
-margin:10px 0;
-background:#1f2937;
-color:white;
-border:none;
-border-radius:10px;
-cursor:pointer;
-transition:0.2s;
-}
-
-#menu button:hover{
-background:linear-gradient(135deg,#2563eb,#1d4ed8);
-transform:translateX(5px) scale(1.05);
-}
-
-/* CONTENT */
-#content{
-margin-left:60px;
-padding:40px;
-}
-
-/* INPUT */
-input{
-padding:10px;
-border-radius:10px;
-border:1px solid #ccc;
-margin:5px;
-}
-
-/* BUTTON */
-#content button{
-background:#2563eb;
-color:white;
-padding:10px 20px;
-border:none;
-border-radius:10px;
-cursor:pointer;
-}
-
-/* GRAPH */
-#plot{
-margin-top:30px;
-width:100%;
-height:500px;
-background:white;
-padding:10px;
-border-radius:16px;
-box-shadow:0 10px 30px rgba(0,0,0,0.2);
-}
-
-</style>
-
+<link rel="stylesheet" href="style.css">
 </head>
 
 <body>
@@ -121,7 +16,6 @@ box-shadow:0 10px 30px rgba(0,0,0,0.2);
 <div id="hamburger" onclick="toggleMenu()">☰</div>
 
 <div id="menu">
-
 <h3>Menü</h3>
 
 <button onclick="toggleGroup('funcGroup')">Fonksiyonlar ▼</button>
@@ -141,12 +35,11 @@ box-shadow:0 10px 30px rgba(0,0,0,0.2);
 
 <button onclick="setMode('calculator')">🧮 Hesap Makinesi</button>
 <button onclick="toggleDark()">🌙 Dark Mode</button>
-
 </div>
 
 <div id="content">
 
-<h2 id="title">Fonksiyon Grafiği</h2>
+<h2 id="title">Fonksiyon</h2>
 
 <input id="func" value="x^2">
 <input id="func2" placeholder="f2" style="display:none">
@@ -169,8 +62,8 @@ box-shadow:0 10px 30px rgba(0,0,0,0.2);
 <div id="plot"></div>
 <div id="result"></div>
 
-<!-- CALCULATOR -->
-<div id="calculator" style="display:block; max-width:260px; margin-top:20px;">
+<!-- CALC -->
+<div id="calculator" style="display:none; max-width:260px; margin-top:20px;">
 <input id="calcDisplay" style="width:100%;padding:10px;font-size:20px;margin-bottom:10px;">
 <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;">
 <button onclick="calc('7')">7</button>
@@ -199,121 +92,6 @@ box-shadow:0 10px 30px rgba(0,0,0,0.2);
 
 </div>
 
-<script>
-
-/* MENU */
-function toggleMenu(){
-document.getElementById("menu").classList.toggle("active");
-}
-
-/* GROUP */
-function toggleGroup(id){
-let el = document.getElementById(id);
-el.style.display = (el.style.display === "none") ? "block" : "none";
-}
-
-/* MODE */
-function setMode(mode){
-
-document.querySelectorAll("input").forEach(i=>i.style.display="none");
-document.getElementById("calculator").style.display="none";
-document.getElementById("plot").style.display="block";
-
-let title = document.getElementById("title");
-
-if(mode==="function"){
-title.innerText="Fonksiyon";
-document.getElementById("func").style.display="inline-block";
-}
-
-if(mode==="multi"){
-title.innerText="Çoklu Fonksiyon";
-["func","func2","func3"].forEach(id=>document.getElementById(id).style.display="inline-block");
-}
-
-if(mode==="distance"){
-title.innerText="Mesafe";
-["x1","y1","x2","y2"].forEach(id=>document.getElementById(id).style.display="inline-block");
-}
-
-if(mode==="derivative"){
-title.innerText="Türev";
-["func","x0"].forEach(id=>document.getElementById(id).style.display="inline-block");
-}
-
-if(mode==="integral"){
-title.innerText="İntegral";
-["func","a","b"].forEach(id=>document.getElementById(id).style.display="inline-block");
-}
-
-if(mode==="tangent"){
-title.innerText="Teğet";
-["func","x0"].forEach(id=>document.getElementById(id).style.display="inline-block");
-}
-
-if(mode==="limit"){
-title.innerText="Limit";
-["func","x0"].forEach(id=>document.getElementById(id).style.display="inline-block");
-}
-
-if(mode==="calculator"){
-title.innerText="Hesap Makinesi";
-document.getElementById("calculator").style.display="block";
-document.getElementById("plot").style.display="none";
-}
-
-}
-
-/* GRAPH */
-function draw(){
-let func = document.getElementById("func").value;
-
-functionPlot({
-target:"#plot",
-width:document.getElementById("plot").offsetWidth,
-height:500,
-grid:true,
-data:[{fn:func}]
-});
-}
-
-/* DARK */
-function toggleDark(){
-document.body.classList.toggle("dark");
-}
-
-/* CALC */
-function calc(v){document.getElementById("calcDisplay").value+=v;}
-
-function calculate(){
-try{
-let exp = document.getElementById("calcDisplay").value
-.replace(/÷/g,"/")
-.replace(/×/g,"*")
-.replace(/−/g,"-");
-
-document.getElementById("calcDisplay").value = math.evaluate(exp);
-}catch{
-alert("Hatalı işlem");
-}
-}
-
-function clearCalc(){
-document.getElementById("calcDisplay").value="";
-}
-
-/* AUTO */
-window.onload = () => {
-draw();
-
-document.getElementById("calcDisplay").addEventListener("keydown", function(e){
-if(e.key === "Enter"){
-calculate();
-}
-});
-}
-
-</script>
 <script src="script.js"></script>
 </body>
 </html>
