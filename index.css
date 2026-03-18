@@ -25,7 +25,7 @@ transition:0.2s;
 transform:scale(1.1);
 }
 
-/* 🔥 MENÜ */
+/* 🔥 MENÜ (FIXED) */
 #menu{
 position:fixed;
 left:0;
@@ -36,9 +36,19 @@ background:#111827;
 color:white;
 padding:25px;
 padding-top:80px;
-display:none;
+
+/* ❌ ESKİ: display:none; */
+/* ✅ YENİ: */
+transform:translateX(-100%);
+
+transition:0.3s;
 box-shadow:4px 0 20px rgba(0,0,0,0.4);
 z-index:1000;
+}
+
+/* 🔥 EKLENDİ */
+#menu.active{
+transform:translateX(0);
 }
 
 /* MENÜ BAŞLIK */
@@ -59,15 +69,15 @@ border:none;
 border-radius:10px;
 cursor:pointer;
 font-size:15px;
-font-weight:500; /* 🔥 sabit font */
+font-weight:500;
 transition: all 0.2s ease;
 }
 
-/* 🔥 HOVER FIX (ARTIK BÜYÜME YOK) */
+/* 🔥 HOVER FIX */
 #menu button:hover{
 background:linear-gradient(135deg,#2563eb,#1d4ed8);
 color:white;
-transform:translateX(5px); /* sadece kayma */
+transform:translateX(5px);
 }
 
 /* ANA İÇERİK */
