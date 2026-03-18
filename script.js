@@ -1,7 +1,6 @@
 /* ================= GLOBAL ================= */
 
 let mode="function"
-let currentPlot=null
 
 /* ELEMENTLER */
 const func=document.getElementById("func")
@@ -47,9 +46,9 @@ i.style.display="none"
 document.getElementById("calculator").style.display="none"
 plot.style.display="block"
 
-func.style.display="inline"
+/* 🔥 DEFAULT: func gizli (fix) */
+func.style.display="none"
 
-/* 🔥 BUTON AYARI */
 let btn=document.getElementById("mainBtn")
 btn.innerText="Grafiği Çiz"
 btn.style.display="inline-block"
@@ -58,42 +57,48 @@ btn.style.display="inline-block"
 
 if(m==="function"){
 title.innerText="Fonksiyon"
+func.style.display="inline"
 }
 
 if(m==="multi"){
 title.innerText="Çoklu Fonksiyon"
+func.style.display="inline"
 func2.style.display="inline"
 func3.style.display="inline"
 }
 
 if(m==="distance"){
 title.innerText="Mesafe"
+
 x1.style.display="inline"
 y1.style.display="inline"
 x2.style.display="inline"
 y2.style.display="inline"
 
-/* 🔥 BUTON TEXT */
 btn.innerText="Sonucu Bul"
 }
 
 if(m==="derivative"){
 title.innerText="Türev"
+func.style.display="inline"
 }
 
 if(m==="integral"){
 title.innerText="İntegral"
+func.style.display="inline"
 a.style.display="inline"
 b.style.display="inline"
 }
 
 if(m==="tangent"){
 title.innerText="Teğet"
+func.style.display="inline"
 x0.style.display="inline"
 }
 
 if(m==="limit"){
 title.innerText="Limit"
+func.style.display="inline"
 x0.style.display="inline"
 }
 
@@ -104,9 +109,7 @@ document.getElementById("calculator").style.display="block"
 plot.style.display="none"
 
 document.getElementById("calcDisplay").style.display="block"
-func.style.display="none"
 
-/* 🔥 BUTON GİZLE */
 btn.style.display="none"
 }
 
@@ -130,8 +133,7 @@ plot.innerHTML=""
 result.innerHTML=""
 
 let f=func.value
-
-if(!f && mode!=="distance") return
+if(!f) return
 
 let data=[]
 
@@ -226,7 +228,12 @@ xAxis:{domain:[-10,10]},
 yAxis:{domain:[-10,10]},
 data:[
 {
-points:[[x1v,y1v],[x2v,y2v]],
+points:[[x1v,y1v]],
+fnType:"points",
+graphType:"scatter"
+},
+{
+points:[[x2v,y2v]],
 fnType:"points",
 graphType:"scatter"
 },
