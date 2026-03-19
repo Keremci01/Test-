@@ -94,10 +94,6 @@ document.getElementById("calcDisplay").style.display="block"
 btn.style.display="none"
 }
 
-/* 🔥 FIX: eski grafiği sil */
-plot.innerHTML=""
-result.innerHTML=""
-
 }
 
 /* ================= DRAW ================= */
@@ -118,42 +114,22 @@ let data=[]
 
 try{
 
-/* ---------- NORMAL ---------- */
 if(mode==="function"){
 data=[{fn:f}]
 }
 
-/* ---------- MULTI ---------- */
 if(mode==="multi"){
 if(f) data.push({fn:f})
-
-if(func2.value){
-data.push({
-fn:func2.value,
-color:"yellow"
-})
+if(func2.value) data.push({fn:func2.value})
+if(func3.value) data.push({fn:func3.value})
 }
 
-if(func3.value){
-data.push({
-fn:func3.value,
-color: document.body.classList.contains("dark") ? "purple" : undefined
-})
-}
-}
-
-/* ---------- DERIVATIVE ---------- */
 if(mode==="derivative"){
 let d=math.derivative(f,"x").toString()
 result.innerHTML="f'(x)="+d
-
-data=[
-{fn:f},
-{fn:d,color:"yellow"}
-]
+data=[{fn:f},{fn:d}]
 }
 
-/* ---------- INTEGRAL ---------- */
 if(mode==="integral"){
 let aVal=Number(a.value)
 let bVal=Number(b.value)
@@ -161,34 +137,23 @@ if(isNaN(aVal)||isNaN(bVal)) return
 
 data=[
 {fn:f},
-{
-fn:f,
-range:[aVal,bVal],
-closed:true,
-color:"rgba(255,255,0,0.3)"
-}
+{fn:f,range:[aVal,bVal],closed:true}
 ]
 }
 
-/* ---------- TANGENT ---------- */
 if(mode==="tangent"){
 let x=Number(x0.value)
 if(isNaN(x)) return
 
-let slope = math.derivative(f,"x").evaluate({x:x})
-let y = math.evaluate(f,{x:x})
+let slope=math.derivative(f,"x").evaluate({x:x})
+let y=math.evaluate(f,{x:x})
 
-let t = `${slope}*(x-${x})+${y}`
-
+let t=`${slope}*(x-${x})+${y}`
 result.innerHTML="Teğet: "+t
 
-data=[
-{fn:f},
-{fn:t,color:"yellow"}
-]
+data=[{fn:f},{fn:t}]
 }
 
-/* ---------- LIMIT ---------- */
 if(mode==="limit"){
 let x=Number(x0.value)
 if(isNaN(x)) return
@@ -199,42 +164,13 @@ result.innerHTML="Limit ≈ "+val.toFixed(4)
 data=[{fn:f}]
 }
 
-/* 🔥 ORTALAMA DOMAIN FIX */
 functionPlot({
 target:"#plot",
 width:plot.clientWidth,
 height:500,
 grid:true,
-xAxis:{domain:[-10,10]},
-yAxis:{domain:[-10,10]},
 data:data
 })
-
-/* 🔥 DARK MODE FIX */
-setTimeout(()=>{
-if(document.body.classList.contains("dark")){
-let svg = document.querySelector("#plot svg")
-
-if(svg){
-
-svg.querySelectorAll("path").forEach(p=>{
-if(!p.getAttribute("stroke")){
-p.style.stroke="#ffffff"
-}
-p.style.strokeWidth="2.2"
-})
-
-svg.querySelectorAll(".grid line").forEach(l=>{
-l.style.stroke="#444"
-})
-
-svg.querySelectorAll("text").forEach(t=>{
-t.style.fill="#ccc"
-})
-
-}
-}
-},50)
 
 }catch(e){
 result.innerHTML="Hata: "+e.message
@@ -242,18 +178,7 @@ result.innerHTML="Hata: "+e.message
 
 }
 
-/* ================= AUTO DRAW ================= */
-
-[func,func2,func3,a,b,x0].forEach(input=>{
-if(input){
-input.addEventListener("input", ()=>{
-clearTimeout(window.drawTimeout)
-window.drawTimeout = setTimeout(draw,300)
-})
-}
-})
-
-/* ================= PNG ================= */
+/* ================= PNG DOWNLOAD ================= */
 
 function downloadPNG(){
 let svg = document.querySelector("#plot svg")
@@ -279,11 +204,33 @@ a.click()
 }
 }
 
+/* ================= CALC ================= */
+
+function calc(v){
+document.getElementById("calcDisplay").value+=v
+}
+
+function calculate(){
+try{
+let exp=document.getElementById("calcDisplay").value
+.replace(/÷/g,"/")
+.replace(/×/g,"*")
+.replace(/−/g,"-")
+
+document.getElementById("calcDisplay").value=math.evaluate(exp)
+}catch{
+alert("Hatalı işlem")
+}
+}
+
+function clearCalc(){
+document.getElementById("calcDisplay").value=""
+}
+
 /* ================= DARK MODE ================= */
 
 function toggleDark(){
 document.body.classList.toggle("dark")
-draw()
 }
 
 /* AUTO */
