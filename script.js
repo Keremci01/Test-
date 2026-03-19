@@ -47,6 +47,9 @@ let btn=document.getElementById("mainBtn")
 btn.innerText="Grafiği Çiz"
 btn.style.display="inline-block"
 
+/* 🔥 PNG BUTON */
+const pngBtn = document.querySelector('button[onclick="downloadPNG()"]')
+
 if(m==="function"){
 title.innerText="Fonksiyon"
 func.style.display="inline"
@@ -92,6 +95,13 @@ plot.style.display="none"
 document.getElementById("calcDisplay").style.display="block"
 
 btn.style.display="none"
+}
+
+/* 🔥 PNG GİZLE/GÖSTER */
+if(m==="calculator"){
+pngBtn.style.display="none"
+}else{
+pngBtn.style.display="inline-block"
 }
 
 /* 🔥 FIX: eski grafiği sil */
