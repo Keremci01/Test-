@@ -15,6 +15,9 @@ const plot=document.getElementById("plot")
 const result=document.getElementById("result")
 const title=document.getElementById("title")
 
+/* 🔥 EKLEDİM */
+const pngBtn = document.getElementById("pngBtn")
+
 /* ================= MENU ================= */
 
 function toggleMenu(){
@@ -32,7 +35,7 @@ function setMode(m){
 
 mode=m
 
-/* 🔥 EKLEDİĞİM YER (TEMİZLEME) */
+/* 🔥 TEMİZLEME */
 plot.innerHTML=""
 result.innerHTML=""
 
@@ -96,6 +99,13 @@ plot.style.display="none"
 document.getElementById("calcDisplay").style.display="block"
 
 btn.style.display="none"
+}
+
+/* 🔥 PNG BUTON KONTROL */
+if(m==="calculator"){
+pngBtn.style.display="none"
+}else{
+pngBtn.style.display="inline-block"
 }
 
 }
@@ -191,7 +201,6 @@ if(!svg) return alert("Önce grafik çiz!")
 let serializer = new XMLSerializer()
 let source = serializer.serializeToString(svg)
 
-/* 🔥 UNICODE FIX */
 let svgBlob = new Blob([source], {type:"image/svg+xml;charset=utf-8"})
 let url = URL.createObjectURL(svgBlob)
 
@@ -205,7 +214,6 @@ canvas.height = svg.clientHeight
 
 let ctx = canvas.getContext("2d")
 
-/* 🔥 ARKA PLAN (beyaz) */
 ctx.fillStyle = "#ffffff"
 ctx.fillRect(0,0,canvas.width,canvas.height)
 
