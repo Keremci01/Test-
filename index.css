@@ -1,4 +1,4 @@
-/* SAYFA GENEL */
+
 body{
 font-family:'Segoe UI', Arial, sans-serif;
 margin:0;
@@ -6,7 +6,6 @@ background:linear-gradient(135deg,#eef2ff,#e0f2fe);
 color:#1f2937;
 }
 
-/* HAMBURGER */
 #hamburger{
 font-size:26px;
 position:fixed;
@@ -25,7 +24,6 @@ transition:0.2s;
 transform:scale(1.1);
 }
 
-/* 🔥 MENÜ (FIXED) */
 #menu{
 position:fixed;
 left:0;
@@ -37,8 +35,6 @@ color:white;
 padding:25px;
 padding-top:80px;
 
-/* ❌ ESKİ: display:none; */
-/* ✅ YENİ: */
 transform:translateX(-100%);
 
 transition:0.3s;
@@ -46,19 +42,16 @@ box-shadow:4px 0 20px rgba(0,0,0,0.4);
 z-index:1000;
 }
 
-/* 🔥 EKLENDİ */
 #menu.active{
 transform:translateX(0);
 }
 
-/* MENÜ BAŞLIK */
 #menu h3{
 margin-top:0;
 margin-bottom:20px;
 font-size:22px;
 }
 
-/* MENÜ BUTON */
 #menu button{
 width:100%;
 padding:12px;
@@ -73,26 +66,22 @@ font-weight:500;
 transition: all 0.2s ease;
 }
 
-/* 🔥 HOVER FIX */
 #menu button:hover{
 background:linear-gradient(135deg,#2563eb,#1d4ed8);
 color:white;
 transform:translateX(5px);
 }
 
-/* ANA İÇERİK */
 #content{
 margin-left:60px;
 padding:40px;
 }
 
-/* BAŞLIK */
 h2{
 font-size:28px;
 margin-bottom:20px;
 }
 
-/* INPUT */
 input{
 padding:10px 14px;
 border-radius:10px;
@@ -108,7 +97,6 @@ border-color:#3b82f6;
 box-shadow:0 0 6px rgba(59,130,246,0.4);
 }
 
-/* ANA BUTON */
 #content button{
 background:linear-gradient(135deg,#2563eb,#1d4ed8);
 color:white;
@@ -126,7 +114,6 @@ background:linear-gradient(135deg,#1d4ed8,#1e40af);
 transform:translateY(-2px);
 }
 
-/* GRAFİK */
 #plot{
 margin-top:30px;
 background:white;
@@ -137,7 +124,6 @@ overflow:hidden;
 width:100%;
 }
 
-/* COORDS */
 #coords{
 color:#2563eb !important;
 background:none !important;
@@ -146,34 +132,27 @@ padding:0 !important;
 border-radius:0 !important;
 }
 
-/* 🔥 GERÇEK SİYAH DARK MODE */
-
 body.dark{
 background:#000 !important;
 color:white;
 }
 
-/* grafik container */
 body.dark #plot{
 background:#000 !important;
 }
 
-/* SVG içini zorla siyah yap */
 body.dark #plot svg{
 background:#000 !important;
 }
 
-/* grid çizgileri */
 body.dark #plot .grid line{
 stroke:#333 !important;
 }
 
-/* eksen yazıları */
 body.dark #plot text{
 fill:#ccc !important;
 }
 
-/* çizgi (fonksiyon) */
 body.dark #plot path{
 stroke:#fff !important;
 stroke-width:2.5 !important;
