@@ -4,7 +4,6 @@ margin:0;
 background:#f4f6f9;
 }
 
-/* HAMBURGER */
 
 #hamburger{
 font-size:28px;
@@ -19,7 +18,6 @@ z-index:1001;
 box-shadow:0 3px 8px rgba(0,0,0,0.2);
 }
 
-/* MENÜ */
 
 #menu{
 position:fixed;
@@ -45,7 +43,6 @@ border-radius:8px;
 cursor:pointer;
 }
 
-/* CONTENT */
 
 #content{
 margin-left:60px;
@@ -53,7 +50,6 @@ margin-right:280px;
 padding:20px;
 }
 
-/* AI PANEL */
 
 #aiPanel{
 position:fixed;
